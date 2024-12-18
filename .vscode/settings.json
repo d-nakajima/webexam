@@ -1,0 +1,12 @@
+{
+  "cSpell.words": ["genkit", "webpush"],
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "shared/*",
+        "cmd": "echo functions/src/_shared | xargs -n 1 -I {dir} cp -rf shared/src/ {dir}"
+      }
+    ]
+  }
+}
