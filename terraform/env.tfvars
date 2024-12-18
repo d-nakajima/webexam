@@ -1,0 +1,5 @@
+prod_project_id = "harattok-prod"
+stg_project_id = "harattok-stg"
+dev_project_id = "harattok-dev"
+region = "asia-northeast1"
+billing_account = "0122CC-47AD68-05BF02"
