@@ -5,7 +5,7 @@
     "commands": [
       {
         "match": "shared/*",
-        "cmd": "echo functions/src/_shared | xargs -n 1 -I {dir} cp -rf shared/src/ {dir}"
+        "cmd": "echo apps/functions/src/_shared | xargs -n 1 -I {dir} cp -rf apps/shared/src/ {dir}"
       }
     ]
   }
