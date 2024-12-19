@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+Disallow: /home/
+Sitemap: https://0s-think-app.vercel.app/sitemap.xml

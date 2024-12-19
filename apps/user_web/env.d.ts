@@ -1,0 +1,22 @@
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      ENVIRONMENT: string;
+      NEXT_PUBLIC_FIREBASE_API_KEY: string;
+      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: string;
+      NEXT_PUBLIC_FIREBASE_PROJECT_ID: string;
+      NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: string;
+      NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: string;
+      NEXT_PUBLIC_FIREBASE_APP_ID: string;
+      NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID?: string;
+      NEXT_PUBLIC_FIREBASE_MESSAGING_VAPID_KEY?: string;
+      VERCEL_PROJECT_PRODUCTION_URL: string;
+      ADMIN_SDK_SERVICE_ACCOUNT_KEY_BASE64: string;
+      NEXT_PUBLIC_USE_FIREBASE_EMULATOR: string;
+      FIREBASE_AUTH_EMULATOR_HOST?: string;
+      FIRESTORE_EMULATOR_HOST?: string;
+    }
+  }
+}
+
+export {};
