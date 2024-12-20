@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["genkit", "webpush"],
+  "cSpell.words": ["genkit", "vercel", "webpush"],
   "eslint.workingDirectories": [{ "mode": "auto" }],
   "emeraldwalk.runonsave": {
     "commands": [

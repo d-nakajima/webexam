@@ -5,12 +5,46 @@
   - storage
   - functions
   - authentication
+
+## 初期構築
+
+### gcpへのログイン
+
+```bash
+gcloud auth application-default login
+gcloud config set project firelaunch
+```
+
+
+### 環境に依存しないインフラの構築
+
+
+- vercel
+
+`./environments/common/terraform.tfvars` を編集
+
+```bash
+terraform init
+terraform plan
+terraform apply -auto-approve
+```
+
+
+### 各環境毎のインフラを構築 (./encironments/_env_)
+
+`./environemnts/(env)/terraform.tfvars` を編集
+
+```bash
+terraform init
+terraform plan
+terraform apply -auto-approve
+```
   
 ## インフラ構成の変更
 
-`env.tfvars`を任意の設定に変更後、以下を実行
 
 ```bash
+terraform init # 初回のみ
 terraform plan
 terraform apply
 ```

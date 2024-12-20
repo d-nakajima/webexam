@@ -1,9 +1,22 @@
+terraform {
+  required_providers {
+    google-beta = {
+      configuration_aliases = [
+        google-beta,
+        google-beta.no_user_project_override
+      ]
+    }
+  }
+}
+
 # GCPプロジェクトの作成
 resource "google_project" "default" {
   provider   = google-beta.no_user_project_override
   name       = var.project_id
   project_id = var.project_id
   billing_account = var.billing_account
+  deletion_policy = "DELETE"
+
   labels = {
     "firebase" = "enabled"
   }
@@ -18,8 +31,8 @@ resource "google_project_service" "default" {
     "cloudbuild.googleapis.com",
     "cloudbilling.googleapis.com",
     "cloudresourcemanager.googleapis.com",
-    # "iam.googleapis.com",
-    # "compute.googleapis.com",
+    "iam.googleapis.com",
+    "compute.googleapis.com",
     "firebase.googleapis.com",
     "identitytoolkit.googleapis.com",
     "firestore.googleapis.com",
@@ -41,12 +54,6 @@ resource "google_firebase_project" "default" {
   depends_on = [
     google_project_service.default
   ]
-}
-
-resource "google_firebase_project_location" "default" {
-  provider = google-beta
-  project  = google_project.default.project_id
-  location_id = var.region
 }
 
 # Firestore
@@ -78,10 +85,23 @@ resource "google_app_engine_application" "default" {
 }
 
 # Storage バケット
+resource "google_storage_bucket" "default" {
+  provider   = google-beta
+  project   = google_project.default.project_id
+  name     = google_project.default.project_id
+  location = var.region
+  storage_class = "STANDARD"
+  force_destroy = true
+  uniform_bucket_level_access = true
+  depends_on = [
+    google_app_engine_application.default,
+  ]
+}
+
 resource "google_firebase_storage_bucket" "default" {
   provider   = google-beta
   project   = google_project.default.project_id
-  bucket_id = google_app_engine_application.default.default_bucket
+  bucket_id = google_storage_bucket.default.id
 }
 
 
@@ -90,22 +110,19 @@ resource "google_identity_platform_config" "default" {
   provider   = google-beta
   project  = google_project.default.project_id
 
+  # Providerによる認証については。google credentialsの情報が必要であり、
+  # 手動で設定する方が簡素であるため、terraform設定しない
+  # 自動化できる場合は修正したい。
+
+
+  authorized_domains = [
+    "localhost",
+  ]
+
   depends_on = [
     google_project_service.default,
   ]
 }
-resource "google_identity_platform_project_default_config" "default" {
-  provider   = google-beta
-  project  = google_project.default.project_id
-  sign_in {
-    allow_duplicate_emails = false
-  }
-
-  depends_on = [
-    google_identity_platform_config.default
-  ]
-}
-
 
 
 # data "google_compute_default_service_account" "default" {
