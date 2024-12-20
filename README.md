@@ -14,10 +14,7 @@ gh repo create __name__ --private
 git init
 git branch -M main
 git remote add origin https://github.com/__username__/__name__
-
-```
-
-`git 
+``` 
 
 1. terraformによるインフラの整備
 
@@ -26,3 +23,5 @@ git remote add origin https://github.com/__username__/__name__
 2. firebaseの設定
 
 `.firebaserc`に任意の設定を登録
+
+3. 
