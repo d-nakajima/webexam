@@ -1,6 +1,7 @@
 import AuthRouteWrapper from "@/app/_presets/_components/AuthRouteWrapper";
 import HeaderSidebarLayout from "@/app/_presets/_components/HeaderSidebarLayout";
 import { ReactNode } from "react";
+import AppSidebarContent from "../_components/AppSidebarContent";
 
 type Props = {
   children: ReactNode;
@@ -10,7 +11,7 @@ type Props = {
 export default async function AuthLayout(props: Props) {
   return (
     <AuthRouteWrapper>
-      <HeaderSidebarLayout header={<Header />} sidebar={<AppSidebar />}>
+      <HeaderSidebarLayout header={<Header />} sidebar={<AppSidebarContent />}>
         {props.children}
       </HeaderSidebarLayout>
     </AuthRouteWrapper>
@@ -23,8 +24,4 @@ function Header() {
       Header
     </header>
   );
-}
-
-function AppSidebar() {
-  return <div>AppSidebar</div>;
 }
