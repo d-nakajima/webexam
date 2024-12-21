@@ -19,12 +19,12 @@ export default function HeaderSidebarLayout(props: Props) {
         "--header-height": HEADER_HEIGHT,
       }}
     >
-      <div
-        className={`w-full shadow-sm fixed top-0 z-20 shadow-white bg-header h-[var(--header-height)]`}
-      >
-        {props.header}
-      </div>
       <SidebarProvider className="flex">
+        <div
+          className={`w-full shadow-sm fixed top-0 z-20 shadow-white bg-header h-[var(--header-height)]`}
+        >
+          {props.header}
+        </div>
         <Sidebar className="top-[--header-height] h-[calc(100%-var(--header-height))] z-10">
           {props.sidebar}
         </Sidebar>
