@@ -41,6 +41,7 @@ module "firebase" {
   project_id = var.project_id
   billing_account = var.billing_account
   region = var.region
+  enable_anonymous_signin = true
 }
 
 module "vercel_envs" {

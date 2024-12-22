@@ -114,6 +114,11 @@ resource "google_identity_platform_config" "default" {
   # 手動で設定する方が簡素であるため、terraform設定しない
   # 自動化できる場合は修正したい。
 
+  sign_in {
+    anonymous {
+      enabled = var.enable_anonymous_signin
+    }
+  }
 
   authorized_domains = [
     "localhost",
