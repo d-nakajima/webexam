@@ -1,9 +1,7 @@
 import { Button } from "@/app/_shadcn/components/ui/button";
-import {
-  SidebarTrigger,
-  useSidebar,
-} from "@/app/_shadcn/components/ui/sidebar";
-import { FilePlusIcon, SearchIcon, ShareIcon, SidebarIcon } from "lucide-react";
+
+
+import { ShareIcon } from "lucide-react";
 import SidebarTop from "./SidebarTop";
 import AuthBox from "./AuthBox";
 import HomeShareDialog from "../HomeShareDialog";

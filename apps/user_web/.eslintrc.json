@@ -1,13 +1,17 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript"],
+  "plugins": ["unused-imports"],
   "rules": {
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "error", // or "error"
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
       {
-        "argsIgnorePattern": "^_",
+        "vars": "all",
         "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^_"
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
       }
     ],
     "@typescript-eslint/no-explicit-any": "warn"
@@ -16,6 +20,7 @@
     {
       "files": ["src/_lib/**/*.{ts,tsx}"],
       "rules": {
+        "unused-imports/no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-empty-object-type": "off"

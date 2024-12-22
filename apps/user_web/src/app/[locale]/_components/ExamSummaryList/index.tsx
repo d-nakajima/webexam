@@ -1,4 +1,4 @@
-import { groupBy, groupByFunc } from "@/app/_presets/_utils/array";
+import { groupByFunc } from "@/app/_presets/_utils/array";
 import { formatDate } from "date-fns";
 import ExamSummaryListItem from "./ExamSummaryListItem";
 import { Link } from "@/_lib/i18n/routing";
@@ -20,7 +20,7 @@ export default function ExamSummaryList(props: Props) {
   return (
     <div className="flex flex-col gap-2">
       {dailyItems.map((dailyItem, index) => (
-        <div className="">
+        <div className="" key={index}>
           <div className="px-2 text-xs font-bold">{dailyItem.group}</div>
           <div>
             {dailyItem.items.map((item) => (

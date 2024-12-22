@@ -7,36 +7,18 @@ import Avatar from "boring-avatars";
 import { User as AuthUser } from "firebase/auth";
 import {
   ChartNoAxesCombinedIcon,
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
   LogIn,
   LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
   Settings,
-  User,
-  UserPlus,
-  Users,
 } from "lucide-react";
 
-import { Button } from "@/app/_shadcn/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/app/_shadcn/components/ui/dropdown-menu";
 

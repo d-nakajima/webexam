@@ -1,7 +1,6 @@
 "use client";
 
 import { Link } from "@/_lib/i18n/routing";
-import { Button } from "@/app/_shadcn/components/ui/button";
 
 type Props = {
   id: string;

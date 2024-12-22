@@ -5,13 +5,13 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/app/_shadcn/components/ui/sidebar";
-import { FilePlusIcon, SearchIcon, SidebarIcon, X } from "lucide-react";
+import { FilePlusIcon, SearchIcon, SidebarIcon } from "lucide-react";
 import SearchDialog from "../SearchDialog";
 import { Link } from "@/_lib/i18n/routing";
 
-type Props = {};
+type Props = object;
 
-export default function SidebarTop(props: Props) {
+export default function SidebarTop(_props: Props) {
   const { open } = useSidebar();
 
   return (

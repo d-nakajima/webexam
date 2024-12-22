@@ -13,7 +13,7 @@ type Props = {
 
 export default function SearchDialog(props: Props) {
   const [text, setText] = useState("");
-  const [result, setResult] = useState<string[]>([]);
+  const [result, _setResult] = useState<string[]>([]);
   return (
     <Dialog>
       <DialogTrigger asChild>{props.children}</DialogTrigger>
