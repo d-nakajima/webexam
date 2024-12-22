@@ -5,6 +5,10 @@ terraform {
       source  = "hashicorp/google-beta"
       version = "~> 6.0"
     }
+    vercel = {
+      source  = "vercel/vercel"
+      version = "~> 2.0"
+    }
   }
   backend "gcs" {
     bucket  = "firelaunch_terraform"
@@ -24,6 +28,10 @@ provider "google-beta" {
   user_project_override = false
 }
 
+provider "vercel" {
+  api_token = data.terraform_remote_state.common.outputs.vercel_api_token
+}
+
 module "firebase" {
   source = "../../modules/firebase"
   providers = {
@@ -33,4 +41,10 @@ module "firebase" {
   project_id = var.project_id
   billing_account = var.billing_account
   region = var.region
+}
+
+module "vercel_envs" {
+  source = "../../modules/vercel_envs"
+  vercel_project_id = data.terraform_remote_state.common.outputs.vercel_project_id
+  firebase_config_base64 = module.firebase.firebase_config_base64
 }

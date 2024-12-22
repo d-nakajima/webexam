@@ -124,6 +124,12 @@ resource "google_identity_platform_config" "default" {
   ]
 }
 
+resource "google_firebase_web_app" "default" {
+  provider        = google-beta
+  project         = google_project.default.project_id
+  display_name    = "web_app"
+  deletion_policy = "DELETE"
+}
 
 # data "google_compute_default_service_account" "default" {
 #   provider = google-beta

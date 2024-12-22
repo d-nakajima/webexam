@@ -11,6 +11,7 @@ terraform {
 resource "vercel_project" "with_git" {
   name = var.vercel_app_name
   framework = "nextjs"
+  root_directory = var.root_directory
 
   git_repository = {
     type = "github"

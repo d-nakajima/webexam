@@ -9,3 +9,7 @@ variable "vercel_app_name" {
 variable "github_repo" {
   type = string
 }
+
+variable "root_directory" {
+  type = string
+}
