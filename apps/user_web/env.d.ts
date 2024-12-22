@@ -15,6 +15,7 @@ declare global {
       NEXT_PUBLIC_USE_FIREBASE_EMULATOR: string;
       FIREBASE_AUTH_EMULATOR_HOST?: string;
       FIRESTORE_EMULATOR_HOST?: string;
+      NEXT_PUBLIC_FIREBASE_CONFIG_BASE64: string;
     }
   }
 }
