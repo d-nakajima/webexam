@@ -14,4 +14,7 @@ export type LocaleMessageType = {
     shortName: string;
     description: string;
   };
+  auth: {
+    already_have_account: string;
+  };
 };

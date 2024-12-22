@@ -13,7 +13,7 @@ type Props = {
 export default async function HomeShareDialog(props: Props) {
   return (
     <Dialog>
-      <DialogTrigger>{props.children}</DialogTrigger>
+      <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent>
         <DialogTitle>アプリをシェア</DialogTitle>
         <div className="p-2 text-center">

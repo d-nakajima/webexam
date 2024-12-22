@@ -15,6 +15,9 @@ const message: LocaleMessageType = {
     shortName: "Sample",
     description: "Sample",
   },
+  auth: {
+    already_have_account: "すでにアカウントが存在しています。",
+  },
 };
 
 export default message;

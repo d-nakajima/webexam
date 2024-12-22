@@ -16,7 +16,7 @@ export default function SearchDialog(props: Props) {
   const [result, setResult] = useState<string[]>([]);
   return (
     <Dialog>
-      <DialogTrigger>{props.children}</DialogTrigger>
+      <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className="p-0 gap-0">
         <div className="p-2">
           <Input

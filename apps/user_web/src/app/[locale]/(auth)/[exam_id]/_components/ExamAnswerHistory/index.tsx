@@ -16,7 +16,7 @@ type Props = {
 export default function ExamAnswerHistory(props: Props) {
   return (
     <Select>
-      <SelectTrigger hideIcon className="flex justify-center gap-2 p-2">
+      <SelectTrigger hideIcon={true} className="flex justify-center gap-2 p-2">
         <div className="text-xs">過去の回答</div>
         <HistoryIcon size="16" />
       </SelectTrigger>
