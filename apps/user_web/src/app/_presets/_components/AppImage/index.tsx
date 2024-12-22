@@ -20,7 +20,7 @@ export default function AppImage(props: Props) {
       alt={alt}
       height={height}
       width={width}
-      className={cn(className, "object-cover bg-gray-50")}
+      className={cn(className, "object-cover")}
       sizes={sizes ?? "100vw"}
     />
   );

@@ -5,7 +5,8 @@ import AppImage from "@/app/_presets/_components/AppImage";
 import { Skeleton } from "@/app/_shadcn/components/ui/skeleton";
 import Avatar from "boring-avatars";
 import { User as AuthUser } from "firebase/auth";
-import { ChartNoAxesCombinedIcon, LogIn, LogOut, Settings } from "lucide-react";
+import { ChartNoAxesCombinedIcon, LogOut, Settings } from "lucide-react";
+import GoogleIcon from "./_images/google.png";
 
 import {
   DropdownMenu,
@@ -43,7 +44,7 @@ export default function AuthBox() {
           <>
             <DropdownMenuLabel>Sign in / Sign up</DropdownMenuLabel>
             <DropdownMenuItem>
-              <LogIn />
+              <AppImage {...GoogleIcon} className="w-4 h-4" alt="google" />
               <span>Googleでログイン</span>
             </DropdownMenuItem>
           </>
