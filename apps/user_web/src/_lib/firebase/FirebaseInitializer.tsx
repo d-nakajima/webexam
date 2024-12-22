@@ -8,14 +8,20 @@ import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 import { getMessaging } from "firebase/messaging";
 
+const key = Buffer.from(
+  process.env.NEXT_PUBLIC_FIREBASE_CONFIG_BASE64,
+  "base64"
+).toString("utf8");
+const FIREBASE_CONFIG = JSON.parse(key);
+
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: FIREBASE_CONFIG.api_key,
+  authDomain: FIREBASE_CONFIG.auth_domain,
+  projectId: FIREBASE_CONFIG.project_id,
+  storageBucket: FIREBASE_CONFIG.storage_bucket,
+  messagingSenderId: FIREBASE_CONFIG.messaging_sender_id,
+  appId: FIREBASE_CONFIG.app_id,
+  measurementId: FIREBASE_CONFIG.measurement_id,
 };
 
 type Props = {
@@ -35,7 +41,7 @@ export default function FirebaseInitializer(props: Props) {
   const functions = getFunctions();
   const firestore = getFirestore();
   useEffect(() => {
-    if (process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID) getAnalytics();
+    if (FIREBASE_CONFIG.measurement_id) getAnalytics();
     if (process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_VAPID_KEY) getMessaging();
   }, []);
 

@@ -1,13 +1,13 @@
-import ExamAnswerHistory from "./_components/ExamAnswerHistory";
-import ExamAnswerHistoryItem from "./_components/ExamAnswerHistory/ExamAnswerHistoryItem";
-import ExamIndex from "./_components/ExamIndex";
-import ExamIndexItem from "./_components/ExamIndex/ExamIndexItem";
-import ExamLayout from "./_components/ExamLayout";
-import ExamQuestionList from "./_components/ExamQuestionList";
-import ExamQuestionListItem from "./_components/ExamQuestionList/ExamQuestionListItem";
+import ExamAnswerHistory from "../_components/ExamAnswerHistory";
+import ExamAnswerHistoryItem from "../_components/ExamAnswerHistory/ExamAnswerHistoryItem";
+import ExamIndex from "../_components/ExamIndex";
+import ExamIndexItem from "../_components/ExamIndex/ExamIndexItem";
+import ExamLayout from "../_components/ExamLayout";
+import ExamQuestionList from "../_components/ExamQuestionList";
+import ExamQuestionListItem from "../_components/ExamQuestionList/ExamQuestionListItem";
 
 type Props = {
-  params: { locale: string; exam_id: string };
+  params: { locale: string; exam_id: string; answer_id: string };
 };
 
 export default async function ExamPage(_props: Props) {
@@ -51,7 +51,6 @@ export default async function ExamPage(_props: Props) {
             type="single_select"
             options={["option 1", "option 2", "option 3", "option 4"]}
             title="single text"
-            answerIndex={1}
           />
           <ExamQuestionListItem
             mode="edit"
