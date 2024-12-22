@@ -22,4 +22,5 @@ module "vercel" {
   vercel_api_token = var.vercel_api_token
   vercel_app_name = var.vercel_app_name
   github_repo = var.github_repo
+  root_directory = var.root_directory
 }

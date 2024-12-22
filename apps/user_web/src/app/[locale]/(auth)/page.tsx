@@ -1,8 +1,8 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Metadata } from "next";
 import { routing } from "@/_lib/i18n/routing";
-import { getVercelOrigin } from "../_presets/_utils/url";
-import JsonLinkedData from "../_presets/_components/JsonLinkedData";
+import { getVercelOrigin } from "../../_presets/_utils/url";
+import JsonLinkedData from "../../_presets/_components/JsonLinkedData";
 
 type Props = {
   params: { locale: string };
@@ -41,7 +41,9 @@ export default async function Home(props: Props) {
         description={metaT("description")}
         url={`${getVercelOrigin()}/${props.params.locale}/`}
       />
-      <main className="px-16 py-8 min-h-screen flex justify-center items-center max-sm:px-5"></main>
+      <main className="px-16 py-8 min-h-screen flex justify-center items-center max-sm:px-5">
+        HomePage
+      </main>
     </div>
   );
 }

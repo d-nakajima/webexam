@@ -1,4 +1,5 @@
 import AuthRouteWrapper from "@/app/_presets/_components/AuthRouteWrapper";
+import HeaderSidebarLayout from "@/app/_presets/_components/HeaderSidebarLayout";
 import { ReactNode } from "react";
 
 type Props = {
@@ -7,5 +8,23 @@ type Props = {
 };
 
 export default async function AuthLayout(props: Props) {
-  return <AuthRouteWrapper>{props.children}</AuthRouteWrapper>;
+  return (
+    <AuthRouteWrapper>
+      <HeaderSidebarLayout header={<Header />} sidebar={<AppSidebar />}>
+        {props.children}
+      </HeaderSidebarLayout>
+    </AuthRouteWrapper>
+  );
+}
+
+function Header() {
+  return (
+    <header className="flex items-center justify-between w-full h-full px-4">
+      Header
+    </header>
+  );
+}
+
+function AppSidebar() {
+  return <div>AppSidebar</div>;
 }

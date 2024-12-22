@@ -12,3 +12,8 @@ variable "github_repo" {
   type = string
   description = "GitHub Repository"
 }
+
+variable "root_directory" {
+  type = string
+  description = "Root Directory"
+}

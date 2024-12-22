@@ -114,6 +114,11 @@ resource "google_identity_platform_config" "default" {
   # 手動で設定する方が簡素であるため、terraform設定しない
   # 自動化できる場合は修正したい。
 
+  sign_in {
+    anonymous {
+      enabled = var.enable_anonymous_signin
+    }
+  }
 
   authorized_domains = [
     "localhost",
@@ -124,6 +129,34 @@ resource "google_identity_platform_config" "default" {
   ]
 }
 
+resource "google_firebase_web_app" "default" {
+  provider        = google-beta
+  project         = google_project.default.project_id
+  display_name    = "web_app"
+  deletion_policy = "DELETE"
+}
+
+resource "google_service_account" "admin_sdk" {
+  provider = google-beta
+  project = google_project.default.project_id
+  account_id = "terraform-admin-sdk"
+  display_name = "Admin SDK created by Terraform"
+}
+
+resource "google_project_iam_member" "admin_sdk" {
+  provider = google-beta
+  project = google_project.default.project_id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:${google_service_account.admin_sdk.email}"
+  depends_on = [
+    google_project_service.default
+  ]
+}
+
+resource "google_service_account_key" "admin_sdk" {
+  provider = google-beta
+  service_account_id = google_service_account.admin_sdk.name
+}
 
 # data "google_compute_default_service_account" "default" {
 #   provider = google-beta

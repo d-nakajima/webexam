@@ -14,3 +14,8 @@ variable "region" {
   type = string
   nullable = false
 }
+
+variable "enable_anonymous_signin" {
+  type = bool
+  default = false
+}
