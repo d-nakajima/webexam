@@ -42,10 +42,10 @@ export default function AuthBox() {
         <DropdownMenuSeparator />
         {authUser?.isAnonymous ? (
           <>
-            <DropdownMenuLabel>Sign in / Sign up</DropdownMenuLabel>
+            <DropdownMenuLabel>Sign in/up</DropdownMenuLabel>
             <DropdownMenuItem>
               <AppImage {...GoogleIcon} className="w-4 h-4" alt="google" />
-              <span>Googleでログイン</span>
+              <span>Login with Google</span>
             </DropdownMenuItem>
           </>
         ) : (
