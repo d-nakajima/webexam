@@ -13,5 +13,10 @@ resource "vercel_project_environment_variables" "default" {
     key = "NEXT_PUBLIC_FIREBASE_CONFIG_BASE64"
     value = var.firebase_config_base64
     target = ["preview"]
+  },{
+    key =  "ADMIN_SDK_SERVICE_ACCOUNT_KEY_BASE64"
+    value = var.admin_sdk_key_base64
+    target = ["preview"]
+    sensitive = true
   }]
 }

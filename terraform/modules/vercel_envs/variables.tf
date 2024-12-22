@@ -5,3 +5,8 @@ variable "vercel_project_id" {
 variable "firebase_config_base64" {
   type = string
 }
+
+variable "admin_sdk_key_base64" {
+  type = string
+  sensitive = true
+}

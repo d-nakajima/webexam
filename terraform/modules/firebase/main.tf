@@ -131,6 +131,28 @@ resource "google_firebase_web_app" "default" {
   deletion_policy = "DELETE"
 }
 
+resource "google_service_account" "admin_sdk" {
+  provider = google-beta
+  project = google_project.default.project_id
+  account_id = "terraform-admin-sdk"
+  display_name = "Admin SDK created by Terraform"
+}
+
+resource "google_project_iam_member" "admin_sdk" {
+  provider = google-beta
+  project = google_project.default.project_id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:${google_service_account.admin_sdk.email}"
+  depends_on = [
+    google_project_service.default
+  ]
+}
+
+resource "google_service_account_key" "admin_sdk" {
+  provider = google-beta
+  service_account_id = google_service_account.admin_sdk.name
+}
+
 # data "google_compute_default_service_account" "default" {
 #   provider = google-beta
 #   project = google_project.default.project_id

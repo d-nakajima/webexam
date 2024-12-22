@@ -47,4 +47,5 @@ module "vercel_envs" {
   source = "../../modules/vercel_envs"
   vercel_project_id = data.terraform_remote_state.common.outputs.vercel_project_id
   firebase_config_base64 = module.firebase.firebase_config_base64
+  admin_sdk_key_base64 = module.firebase.admin_sdk_service_account_key_base64
 }
