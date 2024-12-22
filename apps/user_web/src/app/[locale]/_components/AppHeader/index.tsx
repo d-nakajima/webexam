@@ -6,6 +6,7 @@ import {
 import { FilePlusIcon, SearchIcon, ShareIcon, SidebarIcon } from "lucide-react";
 import SidebarTop from "./SidebarTop";
 import AuthBox from "./AuthBox";
+import HomeShareDialog from "../HomeShareDialog";
 
 type Props = {
   title: string;
@@ -21,9 +22,11 @@ export default function AppHeader(props: Props) {
         <h2 className="text-xs font-bold opacity-75">{props.subtitle}</h2>
       </div>
       <div className="flex items-center p-2 gap-1">
-        <Button size="icon" variant="ghost">
-          <ShareIcon />
-        </Button>
+        <HomeShareDialog>
+          <Button size="icon" variant="ghost">
+            <ShareIcon />
+          </Button>
+        </HomeShareDialog>
         <AuthBox />
       </div>
     </div>

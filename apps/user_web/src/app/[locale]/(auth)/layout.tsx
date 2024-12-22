@@ -13,9 +13,7 @@ export default async function AuthLayout(props: Props) {
   return (
     <AuthRouteWrapper>
       <HeaderSidebarLayout
-        header={
-          <AppHeader title="テストタイトル" subtitle="https://google.com" />
-        }
+        header={<AppHeader title="テストタイトル" />}
         sidebar={<AppSidebarContent />}
       >
         {props.children}
