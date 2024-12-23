@@ -14,13 +14,15 @@ const key = Buffer.from(
 ).toString("utf8");
 const FIREBASE_CONFIG = JSON.parse(key);
 
+console.log("FIREBASE_CONFIG", FIREBASE_CONFIG);
+
 const firebaseConfig = {
   apiKey: FIREBASE_CONFIG.api_key,
   authDomain: FIREBASE_CONFIG.auth_domain,
-  projectId: FIREBASE_CONFIG.project_id,
+  projectId: FIREBASE_CONFIG.project,
   storageBucket: FIREBASE_CONFIG.storage_bucket,
   messagingSenderId: FIREBASE_CONFIG.messaging_sender_id,
-  appId: FIREBASE_CONFIG.app_id,
+  appId: FIREBASE_CONFIG.web_app_id,
   measurementId: FIREBASE_CONFIG.measurement_id,
 };
 
