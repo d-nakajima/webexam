@@ -40,10 +40,9 @@ export const ClientReadDocParser = <T extends z.AnyZodObject>(
   schema: T,
   snapshot: DocumentSnapshot
 ): ReadDoc<z.infer<T>> => {
-  const { createdAt, updatedAt, ...rest } = snapshot.data() as Record<
-    string,
-    unknown
-  >;
+  const { createdAt, updatedAt, ...rest } = snapshot.data({
+    serverTimestamps: "estimate",
+  }) as Record<string, unknown>;
 
   const _createdAt = (createdAt as Timestamp).toDate();
   const _updatedAt = (updatedAt as Timestamp).toDate();

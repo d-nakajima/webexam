@@ -3,6 +3,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { answerDocPath, examDocPath } from "./FirestorePath";
 import { parseAdminReadDoc } from "@/_lib/firebase/AdminDocParser";
 import { AnswerSchema, ExamSchema } from "@/app/_shared";
+import { isAfter } from "date-fns";
 
 initializeAdminSdk();
 
@@ -24,4 +25,17 @@ export function getAnswer(id: string) {
       if (!d.exists) return null;
       return parseAdminReadDoc(d, AnswerSchema);
     });
+}
+
+export function listUserExamAnswerHistory(userId: string, examId: string) {
+  return getFirestore()
+    .collection("answers")
+    .where("userId", "==", userId)
+    .where("examId", "==", examId)
+    .get()
+    .then((d) =>
+      d.docs
+        .map((doc) => parseAdminReadDoc(doc, AnswerSchema))
+        .sort((a, b) => (isAfter(b.createdAt, a.createdAt) ? 1 : -1))
+    );
 }

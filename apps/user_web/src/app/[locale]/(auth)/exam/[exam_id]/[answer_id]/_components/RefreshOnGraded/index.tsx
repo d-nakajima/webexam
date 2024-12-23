@@ -12,10 +12,11 @@ type Props = {
 
 export default function RefreshOnGraded(props: Props) {
   const isFirstLoaded = useRef(false);
+  const answerId = props.answerId;
   const { refresh } = useRouter();
 
   useEffect(() => {
-    const unsubscribe = listenAnswer(props.answerId, (answer) => {
+    const unsubscribe = listenAnswer(answerId, (answer) => {
       if (isFirstLoaded && answer.status === "graded") {
         props.revalidateAnswerCache();
         refresh();
@@ -23,7 +24,7 @@ export default function RefreshOnGraded(props: Props) {
       isFirstLoaded.current = true;
     });
     return unsubscribe;
-  }, [props, refresh]);
+  }, [answerId, refresh]);
 
   return props.children;
 }
