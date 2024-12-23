@@ -71,7 +71,6 @@ resource "google_firestore_database" "default" {
   ]
 }
 
-
 # Firebase の Cloud Storage を使用するには 先に App Engine の有効化が必要
 resource "google_app_engine_application" "default" {
   provider   = google-beta

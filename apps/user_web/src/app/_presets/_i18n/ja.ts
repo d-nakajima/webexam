@@ -1,6 +1,11 @@
 import { type LocaleMessageType } from "./LocaleMessageType";
 
 const message: LocaleMessageType = {
+  validation: {
+    exam: {
+      invalid_url: "URLが不正です",
+    },
+  },
   metadata: {
     title: "Sample",
     description: "Sample",
