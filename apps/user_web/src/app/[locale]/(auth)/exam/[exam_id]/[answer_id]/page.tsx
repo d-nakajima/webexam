@@ -8,17 +8,13 @@ import ExamIndexItem from "../_components/ExamIndex/ExamIndexItem";
 import ExamQuestionList from "../_components/ExamQuestionList";
 import ExamQuestionListItem from "../_components/ExamQuestionList/ExamQuestionListItem";
 import { getServerAuthUser } from "@/_lib/firebase/FirebaseAdminAuth";
-import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
+import { revalidateTag, unstable_cache } from "next/cache";
 import {
   Card,
   CardContent,
   CardHeader,
 } from "@/_lib/shadcn/components/ui/card";
 import RefreshOnGraded from "./_components/RefreshOnGraded";
-import {
-  answerRoutePath,
-  examRoutePath,
-} from "@/app/_presets/_utils/route_builder";
 
 type Props = {
   params: { locale: string; exam_id: string; answer_id: string };

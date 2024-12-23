@@ -1,7 +1,6 @@
 "use client";
 
 import { listenAnswer } from "@/app/_presets/_repositories/clientFirestore";
-import { revalidateTag } from "next/cache";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 
@@ -24,7 +23,7 @@ export default function RefreshOnGraded(props: Props) {
       isFirstLoaded.current = true;
     });
     return unsubscribe;
-  }, [props.answerId, refresh]);
+  }, [props, refresh]);
 
   return props.children;
 }
