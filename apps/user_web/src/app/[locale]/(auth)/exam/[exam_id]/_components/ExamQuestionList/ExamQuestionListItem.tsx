@@ -6,13 +6,14 @@ import {
   RadioGroupItem,
 } from "@/app/_shadcn/components/ui/radio-group";
 import { Textarea } from "@/app/_shadcn/components/ui/textarea";
+import GradeSuspendedIcon from "./GradeSuspendedIcon";
 
 type QuestionBase = {
   number: number;
   title: string;
   description?: string;
   mode: "view" | "edit";
-  grade?: "correct" | "wrong" | "partial";
+  gradeRate?: number;
   comment?: string;
 };
 
@@ -26,8 +27,8 @@ type SingleSelectQuestion = {
 type MultiSelectQuestion = {
   type: "multi_select";
   options: string[];
-  correctAnswerIndices?: number[];
-  answerIndices?: number[];
+  correctAnswerIndexes?: number[];
+  answerIndexes?: number[];
 } & QuestionBase;
 
 type OneLineTextQuestion = {
@@ -67,34 +68,23 @@ export default async function ExamQuestionListItem(props: Props) {
       break;
   }
 
-  let grade: React.ReactNode | undefined;
-  if (props.mode === "view") {
-    switch (props.grade) {
-      case "correct":
-        grade = "✅";
-        break;
-      case "wrong":
-        grade = "❌";
-        break;
-      case "partial":
-        grade = "⚠️";
-        break;
-    }
-  }
-
   return (
     <div className="flex items-start">
       <div className="flex-grow">
         <div className="flex font-bold items-center text-lg gap-1">
-          {grade && <div className="text-sm w-4 -ml-5">{grade}</div>}
+          <div className="text-sm w-4 -ml-5">
+            {props.mode === "view" && (
+              <GradeSuspendedIcon gradeRate={props.gradeRate} />
+            )}
+          </div>
           <div>{props.number}.</div>
           <div>{props.title}</div>
         </div>
         <div className="mt-2 text-sm">{props.description}</div>
         <div className="my-5">{component}</div>
-        {props.comment && (
-          <div className="my-2 bg-black border rounded-md py-2 px-3 whitespace-pre-wrap break-words w-full">
-            {props.comment}
+        {props.mode === "view" && (
+          <div className="my-2 text-sm bg-black border rounded-md py-2 px-3 whitespace-pre-wrap break-words w-full">
+            {props.comment || "AI採点中..."}
           </div>
         )}
       </div>
@@ -103,7 +93,8 @@ export default async function ExamQuestionListItem(props: Props) {
 }
 
 function SingleSelectQuestion(props: SingleSelectQuestion) {
-  const defaultValue = props.answerIndex ? `${props.answerIndex}` : "";
+  const defaultValue =
+    props.answerIndex !== undefined ? `${props.answerIndex}` : "";
 
   return (
     <RadioGroup
@@ -124,6 +115,7 @@ function SingleSelectQuestion(props: SingleSelectQuestion) {
             <RadioGroupItem
               value={`${index}`}
               id={`${props.number}_${index}`}
+              disabled={props.mode === "view"}
             />
             <Label
               className={`cursor-pointer ${additionalStyle}`}
@@ -139,15 +131,15 @@ function SingleSelectQuestion(props: SingleSelectQuestion) {
 }
 
 function MultiSelectQuestion(props: MultiSelectQuestion) {
-  const defaultValues = props.answerIndices || [];
+  const defaultValues = props.answerIndexes || [];
 
   return (
     <div className="flex flex-col gap-2">
       {props.options.map((option, index) => {
         const additionalStyle =
           props.mode === "view" &&
-          props.correctAnswerIndices &&
-          props.correctAnswerIndices.includes(index)
+          props.correctAnswerIndexes &&
+          props.correctAnswerIndexes.includes(index)
             ? "font-bold"
             : "";
 
@@ -158,6 +150,7 @@ function MultiSelectQuestion(props: MultiSelectQuestion) {
               defaultChecked={defaultValues.includes(index)}
               name={`${props.number}`}
               value={index}
+              disabled={props.mode === "view"}
             />
             <Label
               className={`cursor-pointer ${additionalStyle}`}
@@ -175,7 +168,15 @@ function MultiSelectQuestion(props: MultiSelectQuestion) {
 function OneLineTextQuestion(props: OneLineTextQuestion) {
   return (
     <div>
-      <Input name={`${props.number}`} type="text" defaultValue={props.answer} />
+      <Input
+        name={`${props.number}`}
+        type="text"
+        defaultValue={props.answer}
+        disabled={props.mode === "view"}
+      />
+      {props.correctAnswer && props.mode === "view" && (
+        <div className="text-sm mt-2">正答例: {props.correctAnswer}</div>
+      )}
     </div>
   );
 }
@@ -183,7 +184,14 @@ function OneLineTextQuestion(props: OneLineTextQuestion) {
 function FreeTextQuestion(props: FreeTextQuestion) {
   return (
     <div>
-      <Textarea name={`${props.number}`} defaultValue={props.answer} />
+      <Textarea
+        name={`${props.number}`}
+        defaultValue={props.answer}
+        disabled={props.mode === "view"}
+      />
+      {props.correctAnswer && props.mode === "view" && (
+        <div className="text-sm mt-2">正答例: {props.correctAnswer}</div>
+      )}
     </div>
   );
 }

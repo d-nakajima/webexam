@@ -7,5 +7,5 @@ export function examRoutePath(id: string) {
 }
 
 export function answerRoutePath(examId: string, id: string) {
-  return `/exam/${examId}/answer/${id}`;
+  return `/exam/${examId}/${id}`;
 }

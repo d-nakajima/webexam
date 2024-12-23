@@ -54,7 +54,7 @@ export const AnswerSchema = z.object({
   content: z.string().array(),
   grades: z
     .object({
-      point: z.number(),
+      rate: z.number().min(0).max(1),
       comment: z.string(),
     })
     .array(),

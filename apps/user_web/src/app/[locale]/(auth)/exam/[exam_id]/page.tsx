@@ -51,9 +51,7 @@ export default async function ExamPage(props: Props) {
                 type={question.type}
                 title={question.title}
                 description={question.description}
-                options={
-                  question.options?.map((option, index) => option.text) || []
-                }
+                options={question.options?.map((option) => option.text) || []}
               />
             ))}
           </ExamQuestionList>
