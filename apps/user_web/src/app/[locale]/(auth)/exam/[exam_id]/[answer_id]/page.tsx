@@ -39,9 +39,6 @@ export default async function AnswerPage(props: Props) {
   async function revalidateAnswerCache() {
     "use server";
     revalidateTag(props.params.answer_id);
-    // revalidatePath(
-    //   answerRoutePath(props.params.exam_id, props.params.answer_id)
-    // );
   }
 
   const answer = await cacheGetAnswer(props.params.answer_id);
