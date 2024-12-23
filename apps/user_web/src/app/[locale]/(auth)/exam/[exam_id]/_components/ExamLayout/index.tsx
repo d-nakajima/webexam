@@ -11,7 +11,9 @@ export default function ExamLayout(props: Props) {
       <div className="sticky top-[calc(var(--header-height)+20px)] col-span-2">
         {props.left}
       </div>
-      <div className="col-span-8 w-full">{props.children}</div>
+      <div className="col-span-8 w-full h-full min-h-[calc(100vh-40px-var(--header-height))]">
+        {props.children}
+      </div>
       <div className="sticky top-[calc(var(--header-height)+20px)] col-span-2">
         {props.right}
       </div>

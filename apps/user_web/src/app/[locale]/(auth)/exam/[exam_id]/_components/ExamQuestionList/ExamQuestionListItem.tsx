@@ -106,7 +106,11 @@ function SingleSelectQuestion(props: SingleSelectQuestion) {
   const defaultValue = props.answerIndex ? `${props.answerIndex}` : "";
 
   return (
-    <RadioGroup defaultValue={defaultValue} className="flex flex-col gap-2">
+    <RadioGroup
+      defaultValue={defaultValue}
+      name={`${props.number}`}
+      className="flex flex-col gap-2"
+    >
       {props.options.map((option, index) => {
         const additionalStyle =
           props.mode === "view"
@@ -152,6 +156,8 @@ function MultiSelectQuestion(props: MultiSelectQuestion) {
             <Checkbox
               id={`${props.number}_${index}`}
               defaultChecked={defaultValues.includes(index)}
+              name={`${props.number}`}
+              value={index}
             />
             <Label
               className={`cursor-pointer ${additionalStyle}`}
@@ -169,7 +175,7 @@ function MultiSelectQuestion(props: MultiSelectQuestion) {
 function OneLineTextQuestion(props: OneLineTextQuestion) {
   return (
     <div>
-      <Input type="text" defaultValue={props.answer} />
+      <Input name={`${props.number}`} type="text" defaultValue={props.answer} />
     </div>
   );
 }
@@ -177,7 +183,7 @@ function OneLineTextQuestion(props: OneLineTextQuestion) {
 function FreeTextQuestion(props: FreeTextQuestion) {
   return (
     <div>
-      <Textarea defaultValue={props.answer} />
+      <Textarea name={`${props.number}`} defaultValue={props.answer} />
     </div>
   );
 }
