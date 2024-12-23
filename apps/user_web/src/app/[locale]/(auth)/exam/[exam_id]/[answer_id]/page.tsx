@@ -18,6 +18,7 @@ import {
   answerCacheTag,
   userExamAnswerHistoryCacheTag,
 } from "@/app/_presets/_utils/cache";
+import PageLayout from "../../../_components/PageLayout";
 
 type Props = {
   params: { locale: string; exam_id: string; answer_id: string };
@@ -55,70 +56,76 @@ export default async function AnswerPage(props: Props) {
       answerId={props.params.answer_id}
       revalidateAnswerCache={revalidateAnswerCache}
     >
-      <ExamLayout
-        left={
-          <ExamIndex>
-            {answer.examData.questions.map((question, index) => {
-              const grades = answer.grades[index];
-              return (
-                <ExamIndexItem
-                  key={index}
-                  id={`${index}`}
-                  number={index + 1}
-                  title={question.title}
-                  gradeRate={grades?.rate}
-                />
-              );
-            })}
-          </ExamIndex>
-        }
-        right={<ExamAnswerHistory examId={props.params.exam_id} />}
+      <PageLayout
+        title={answer.examData.title}
+        shortTitle={answer.examData.shortTitle}
+        subtitle={answer.examData.url}
       >
-        <div className="flex flex-col h-full">
-          <Card className="mb-6 text-sm">
-            <CardHeader>【{answer.examData.title}】</CardHeader>
-            <CardContent>{answer.examData.abstract}</CardContent>
-          </Card>
-          <div className="flex-grow">
-            <ExamQuestionList>
+        <ExamLayout
+          left={
+            <ExamIndex>
               {answer.examData.questions.map((question, index) => {
-                const thisAnswer = answer.content[index];
-                const props: Record<string, unknown> = {};
-                if (question.type === "single_select") {
-                  props["answerIndex"] = Number(thisAnswer);
-                  props["correctAnswerIndex"] = Number(question.answer);
-                } else if (question.type === "multi_select") {
-                  props["answerIndexes"] = thisAnswer.split(",").map(Number);
-                  props["correctAnswerIndexes"] = question.answer
-                    .split(",")
-                    .map(Number);
-                } else {
-                  props["answer"] = thisAnswer;
-                  props["correctAnswer"] = question.answer;
-                }
-
+                const grades = answer.grades[index];
                 return (
-                  <ExamQuestionListItem
+                  <ExamIndexItem
                     key={index}
-                    mode="view"
+                    id={`${index}`}
                     number={index + 1}
-                    type={question.type}
                     title={question.title}
-                    description={question.description}
-                    options={
-                      question.options?.map((option, index) => option.text) ||
-                      []
-                    }
-                    gradeRate={answer.grades[index]?.rate}
-                    {...props}
-                    comment={answer.grades[index]?.comment}
+                    gradeRate={grades?.rate}
                   />
                 );
               })}
-            </ExamQuestionList>
+            </ExamIndex>
+          }
+          right={<ExamAnswerHistory examId={props.params.exam_id} />}
+        >
+          <div className="flex flex-col h-full">
+            <Card className="mb-6 text-sm">
+              <CardHeader>【{answer.examData.title}】</CardHeader>
+              <CardContent>{answer.examData.abstract}</CardContent>
+            </Card>
+            <div className="flex-grow">
+              <ExamQuestionList>
+                {answer.examData.questions.map((question, index) => {
+                  const thisAnswer = answer.content[index];
+                  const props: Record<string, unknown> = {};
+                  if (question.type === "single_select") {
+                    props["answerIndex"] = Number(thisAnswer);
+                    props["correctAnswerIndex"] = Number(question.answer);
+                  } else if (question.type === "multi_select") {
+                    props["answerIndexes"] = thisAnswer.split(",").map(Number);
+                    props["correctAnswerIndexes"] = question.answer
+                      .split(",")
+                      .map(Number);
+                  } else {
+                    props["answer"] = thisAnswer;
+                    props["correctAnswer"] = question.answer;
+                  }
+
+                  return (
+                    <ExamQuestionListItem
+                      key={index}
+                      mode="view"
+                      number={index + 1}
+                      type={question.type}
+                      title={question.title}
+                      description={question.description}
+                      options={
+                        question.options?.map((option, index) => option.text) ||
+                        []
+                      }
+                      gradeRate={answer.grades[index]?.rate}
+                      {...props}
+                      comment={answer.grades[index]?.comment}
+                    />
+                  );
+                })}
+              </ExamQuestionList>
+            </div>
           </div>
-        </div>
-      </ExamLayout>
+        </ExamLayout>
+      </PageLayout>
     </RefreshOnGraded>
   );
 }

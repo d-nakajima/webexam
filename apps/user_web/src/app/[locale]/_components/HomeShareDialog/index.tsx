@@ -10,7 +10,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default async function HomeShareDialog(props: Props) {
+export default function HomeShareDialog(props: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>{props.children}</DialogTrigger>

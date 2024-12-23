@@ -13,6 +13,8 @@ import ExamAnswerSubmit from "./_components/ExamAnswerSubmit";
 import { getServerAuthUser } from "@/_lib/firebase/FirebaseAdminAuth";
 import { unstable_cache } from "next/cache";
 import { userExamAnswerHistoryCacheTag } from "@/app/_presets/_utils/cache";
+import PageHeader from "@/app/[locale]/_components/PageHeader";
+import PageLayout from "../../_components/PageLayout";
 
 type Props = {
   params: { locale: string; exam_id: string };
@@ -42,41 +44,47 @@ export default async function ExamPage(props: Props) {
   if (!exam) return notFound();
 
   return (
-    <ExamLayout
-      left={
-        <ExamIndex>
-          {exam.questions.map((question, index) => (
-            <ExamIndexItem
-              key={index}
-              id={`${index}`}
-              number={index + 1}
-              title={question.title}
-            />
-          ))}
-        </ExamIndex>
-      }
-      right={<ExamAnswerHistory examId={props.params.exam_id} />}
+    <PageLayout
+      title={exam.title}
+      shortTitle={exam.shortTitle}
+      subtitle={exam.url}
     >
-      <form className="flex flex-col h-full">
-        <div className="flex-grow">
-          <ExamQuestionList>
+      <ExamLayout
+        left={
+          <ExamIndex>
             {exam.questions.map((question, index) => (
-              <ExamQuestionListItem
+              <ExamIndexItem
                 key={index}
-                mode="edit"
+                id={`${index}`}
                 number={index + 1}
-                type={question.type}
                 title={question.title}
-                description={question.description}
-                options={question.options?.map((option) => option.text) || []}
               />
             ))}
-          </ExamQuestionList>
-        </div>
-        <div className="flex mt-4 self-end">
-          <ExamAnswerSubmit exam={exam} />
-        </div>
-      </form>
-    </ExamLayout>
+          </ExamIndex>
+        }
+        right={<ExamAnswerHistory examId={props.params.exam_id} />}
+      >
+        <form className="flex flex-col h-full">
+          <div className="flex-grow">
+            <ExamQuestionList>
+              {exam.questions.map((question, index) => (
+                <ExamQuestionListItem
+                  key={index}
+                  mode="edit"
+                  number={index + 1}
+                  type={question.type}
+                  title={question.title}
+                  description={question.description}
+                  options={question.options?.map((option) => option.text) || []}
+                />
+              ))}
+            </ExamQuestionList>
+          </div>
+          <div className="flex mt-4 self-end">
+            <ExamAnswerSubmit exam={exam} />
+          </div>
+        </form>
+      </ExamLayout>
+    </PageLayout>
   );
 }
