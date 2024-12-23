@@ -32,7 +32,7 @@ export default function SidebarTop(_props: Props) {
           <SearchIcon size={16} />
         </Button>
       </SearchDialog>
-      <Link href="#">
+      <Link href="/">
         <Button size="icon" variant="ghost">
           <FilePlusIcon size={16} />
         </Button>

@@ -14,8 +14,6 @@ const key = Buffer.from(
 ).toString("utf8");
 const FIREBASE_CONFIG = JSON.parse(key);
 
-console.log("FIREBASE_CONFIG", FIREBASE_CONFIG);
-
 const firebaseConfig = {
   apiKey: FIREBASE_CONFIG.api_key,
   authDomain: FIREBASE_CONFIG.auth_domain,

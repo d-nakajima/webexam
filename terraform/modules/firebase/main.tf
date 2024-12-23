@@ -143,10 +143,20 @@ resource "google_service_account" "admin_sdk" {
   display_name = "Admin SDK created by Terraform"
 }
 
-resource "google_project_iam_member" "admin_sdk" {
+resource "google_project_iam_member" "token_creator" {
   provider = google-beta
   project = google_project.default.project_id
   role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:${google_service_account.admin_sdk.email}"
+  depends_on = [
+    google_project_service.default
+  ]
+}
+
+resource "google_project_iam_member" "admin_sdk" {
+  provider = google-beta
+  project = google_project.default.project_id
+  role    = "roles/firebase.sdkAdminServiceAgent"
   member  = "serviceAccount:${google_service_account.admin_sdk.email}"
   depends_on = [
     google_project_service.default

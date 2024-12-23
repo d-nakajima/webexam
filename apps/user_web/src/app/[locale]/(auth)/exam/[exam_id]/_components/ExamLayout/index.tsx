@@ -17,15 +17,4 @@ export default function ExamLayout(props: Props) {
       </div>
     </div>
   );
-  return (
-    <div className="flex gap-8 justify-around items-start py-5">
-      <div className="shrink-0 sticky top-[calc(var(--header-height)+20px)]">
-        {props.left}
-      </div>
-      <div className="flex-grow max-w-xl">{props.children}</div>
-      <div className="shrink-0 sticky top-[calc(var(--header-height)+20px)]">
-        {props.right}
-      </div>
-    </div>
-  );
 }
