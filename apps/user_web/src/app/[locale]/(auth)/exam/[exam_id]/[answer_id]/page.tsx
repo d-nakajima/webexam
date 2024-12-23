@@ -2,7 +2,6 @@ import { getAnswer } from "@/app/_presets/_repositories/adminFirestore";
 import ExamLayout from "../_components/ExamLayout";
 import { notFound } from "next/navigation";
 import ExamAnswerHistory from "../_components/ExamAnswerHistory";
-import ExamAnswerHistoryItem from "../_components/ExamAnswerHistory/ExamAnswerHistoryItem";
 import ExamIndex from "../_components/ExamIndex";
 import ExamIndexItem from "../_components/ExamIndex/ExamIndexItem";
 import ExamQuestionList from "../_components/ExamQuestionList";
@@ -15,6 +14,10 @@ import {
   CardHeader,
 } from "@/_lib/shadcn/components/ui/card";
 import RefreshOnGraded from "./_components/RefreshOnGraded";
+import {
+  answerCacheTag,
+  userExamAnswerHistoryCacheTag,
+} from "@/app/_presets/_utils/cache";
 
 type Props = {
   params: { locale: string; exam_id: string; answer_id: string };
@@ -28,13 +31,19 @@ export default async function AnswerPage(props: Props) {
     (examId: string) => getAnswer(examId),
     [],
     {
-      tags: [props.params.answer_id],
+      tags: [answerCacheTag(props.params.answer_id)],
     }
   );
 
   async function revalidateAnswerCache() {
     "use server";
-    revalidateTag(props.params.answer_id);
+    const auth = await getServerAuthUser();
+    if (!auth) return notFound();
+
+    revalidateTag(answerCacheTag(props.params.answer_id));
+    revalidateTag(
+      userExamAnswerHistoryCacheTag(auth.uid, props.params.exam_id)
+    );
   }
 
   const answer = await cacheGetAnswer(props.params.answer_id);
@@ -63,12 +72,7 @@ export default async function AnswerPage(props: Props) {
             })}
           </ExamIndex>
         }
-        right={
-          <ExamAnswerHistory>
-            <ExamAnswerHistoryItem date={new Date()} score={10} />
-            <ExamAnswerHistoryItem date={new Date()} score={10} />
-          </ExamAnswerHistory>
-        }
+        right={<ExamAnswerHistory examId={props.params.exam_id} />}
       >
         <div className="flex flex-col h-full">
           <Card className="mb-6 text-sm">

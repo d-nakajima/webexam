@@ -2,10 +2,12 @@ import { groupByFunc } from "@/app/_presets/_utils/array";
 import { formatDate } from "date-fns";
 import ExamSummaryListItem from "./ExamSummaryListItem";
 import { Link } from "@/_lib/i18n/routing";
+import { answerRoutePath } from "@/app/_presets/_utils/route_builder";
 
 type Props = {
   items: {
     id: string;
+    examId: string;
     date: Date;
     title: string;
     url: string;
@@ -24,7 +26,11 @@ export default function ExamSummaryList(props: Props) {
           <div className="px-2 text-xs font-bold">{dailyItem.group}</div>
           <div>
             {dailyItem.items.map((item) => (
-              <Link href="#" key={item.id} className="px-2 py-[2px] block">
+              <Link
+                href={answerRoutePath(item.examId, item.id)}
+                key={item.id}
+                className="px-2 py-1.5 block"
+              >
                 <ExamSummaryListItem
                   id={item.id}
                   title={item.title}

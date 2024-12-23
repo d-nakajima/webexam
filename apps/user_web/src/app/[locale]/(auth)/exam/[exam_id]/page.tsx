@@ -1,6 +1,8 @@
-import { getExam } from "@/app/_presets/_repositories/adminFirestore";
+import {
+  getExam,
+  listUserExamAnswerHistory,
+} from "@/app/_presets/_repositories/adminFirestore";
 import ExamAnswerHistory from "./_components/ExamAnswerHistory";
-import ExamAnswerHistoryItem from "./_components/ExamAnswerHistory/ExamAnswerHistoryItem";
 import ExamIndex from "./_components/ExamIndex";
 import ExamIndexItem from "./_components/ExamIndex/ExamIndexItem";
 import ExamLayout from "./_components/ExamLayout";
@@ -8,6 +10,9 @@ import ExamQuestionList from "./_components/ExamQuestionList";
 import ExamQuestionListItem from "./_components/ExamQuestionList/ExamQuestionListItem";
 import { notFound } from "next/navigation";
 import ExamAnswerSubmit from "./_components/ExamAnswerSubmit";
+import { getServerAuthUser } from "@/_lib/firebase/FirebaseAdminAuth";
+import { unstable_cache } from "next/cache";
+import { userExamAnswerHistoryCacheTag } from "@/app/_presets/_utils/cache";
 
 type Props = {
   params: { locale: string; exam_id: string };
@@ -16,7 +21,24 @@ type Props = {
 export const revalidate = 600;
 
 export default async function ExamPage(props: Props) {
+  const auth = await getServerAuthUser();
+  if (!auth) return notFound();
+
   const exam = await getExam(props.params.exam_id);
+  const cacheListUserExamAnswerHistory = unstable_cache(
+    (userId: string, examId: string) =>
+      listUserExamAnswerHistory(userId, examId),
+    [],
+    {
+      tags: [userExamAnswerHistoryCacheTag(auth.uid, props.params.exam_id)],
+    }
+  );
+
+  const userExamAnswerHistory = await cacheListUserExamAnswerHistory(
+    auth.uid,
+    props.params.exam_id
+  );
+
   if (!exam) return notFound();
 
   return (
@@ -33,12 +55,7 @@ export default async function ExamPage(props: Props) {
           ))}
         </ExamIndex>
       }
-      right={
-        <ExamAnswerHistory>
-          <ExamAnswerHistoryItem date={new Date()} score={10} />
-          <ExamAnswerHistoryItem date={new Date()} score={10} />
-        </ExamAnswerHistory>
-      }
+      right={<ExamAnswerHistory examId={props.params.exam_id} />}
     >
       <form className="flex flex-col h-full">
         <div className="flex-grow">

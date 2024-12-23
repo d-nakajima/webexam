@@ -4,6 +4,9 @@ import {
   doc,
   getFirestore,
   onSnapshot,
+  orderBy,
+  query,
+  where,
 } from "firebase/firestore";
 import {
   answerCollectionPath,
@@ -68,5 +71,22 @@ export function listenAnswer(
   return onSnapshot(_doc(answerDocPath(id)), (doc) => {
     if (!doc.exists()) return null;
     return callback(ClientReadDocParser(AnswerSchema, doc));
+  });
+}
+
+export function listenUserAnswers(
+  userId: string,
+  callback: (answers: ReadDoc<AnswerType>[]) => void
+) {
+  const _query = query(
+    _collection(answerCollectionPath()),
+    where("userId", "==", userId),
+    orderBy("createdAt", "desc")
+  );
+  return onSnapshot(_query, (snapshot) => {
+    const answers = snapshot.docs.map((doc) =>
+      ClientReadDocParser(AnswerSchema, doc)
+    );
+    return callback(answers);
   });
 }

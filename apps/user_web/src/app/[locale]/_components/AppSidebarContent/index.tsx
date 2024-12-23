@@ -1,33 +1,34 @@
+"use client";
+import { useEffect, useState } from "react";
 import ExamSummaryList from "../ExamSummaryList";
+import { ReadDoc } from "@/_lib/firebase/ReadDoc";
+import { AnswerType } from "@/app/_shared";
+import { listenUserAnswers } from "@/app/_presets/_repositories/clientFirestore";
+import { useAuth } from "@/_lib/firebase/FirebaseAuthProvider";
 
-export default async function AppSidebarContent() {
+export default function AppSidebarContent() {
+  const { authUser } = useAuth();
+  if (!authUser) throw new Error("authUser is not found");
+
+  const [answers, setAnswers] = useState<ReadDoc<AnswerType>[]>([]);
+  useEffect(() => {
+    return listenUserAnswers(authUser.uid, (answers) => {
+      setAnswers(answers);
+    });
+  }, []);
+
   return (
     <div className="flex flex-col items-stretch w-full h-full">
       <div className="flex-grow" />
       <ExamSummaryList
-        items={[
-          {
-            id: "1",
-            date: new Date(),
-            title: "Exam 1",
-            url: "/exam/1",
-            score: 8.2,
-          },
-          {
-            id: "2",
-            date: new Date(),
-            title: "Exam 2",
-            url: "/exam/2",
-            score: 5.3,
-          },
-          {
-            id: "3",
-            date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
-            title: "Exam 3",
-            url: "/exam/3",
-            score: 6.8,
-          },
-        ]}
+        items={answers.map((answer) => ({
+          id: answer.id,
+          examId: answer.examId,
+          date: answer.createdAt,
+          title: answer.examData.shortTitle,
+          url: answer.examData.url,
+          score: answer.score,
+        }))}
       />
     </div>
   );

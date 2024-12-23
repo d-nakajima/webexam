@@ -1,10 +1,14 @@
+import ReactLoading from "react-loading";
 type Props = {
-  score: number;
+  score?: number;
   className?: string;
 };
 
 export default function ColoredScore(props: Props) {
   let scoreColor: string;
+  if (!props.score)
+    return <ReactLoading type="spin" color="#000" width="14" height="14" />;
+
   if (props.score >= 8) {
     scoreColor = "text-green-500";
   } else if (props.score >= 6) {
@@ -13,6 +17,8 @@ export default function ColoredScore(props: Props) {
     scoreColor = "text-red-500";
   }
   return (
-    <div className={`${scoreColor} ${props.className}`}>{props.score}</div>
+    <div className={`${scoreColor} ${props.className}`}>
+      {props.score.toFixed(1)}
+    </div>
   );
 }
