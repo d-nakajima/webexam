@@ -7,6 +7,7 @@ type Props = {
   title: string;
   shortTitle?: string;
   subtitle?: string;
+  sharedDialogContent?: React.ReactNode;
   children: React.ReactNode;
 };
 
@@ -15,6 +16,7 @@ export default function PageLayout(props: Props) {
   const { children, ...headerProps } = props;
   return (
     <div className="w-full">
+      {children}
       <div
         className={cn(
           "fixed top-0 right-0 left-0 w-full p-1 h-[var(--header-height)] bg-header transition-all ease-linear duration-200 pl-[var(--sidebar-width)]",
@@ -23,7 +25,6 @@ export default function PageLayout(props: Props) {
       >
         <PageHeader {...headerProps} />
       </div>
-      {children}
     </div>
   );
 }

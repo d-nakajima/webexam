@@ -6,11 +6,11 @@ import {
 import { z } from "zod";
 import { ReadDoc } from "./ReadDoc";
 
-export const ClientUpdateDocParser = <T extends z.AnyZodObject>(
+export const parseClientUpdateDoc = <T extends z.AnyZodObject>(
   schema: T,
-  data: z.infer<typeof schema>
+  data: Partial<z.infer<typeof schema>>
 ) => {
-  const result = schema.parse(data);
+  const result = schema.partial().parse(data);
   return {
     ...result,
     updatedAt: serverTimestamp(),

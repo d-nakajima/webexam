@@ -2,14 +2,18 @@ import { Button } from "@/app/_shadcn/components/ui/button";
 
 import { ShareIcon } from "lucide-react";
 import AuthBox from "./AuthBox";
-import HomeShareDialog from "../HomeShareDialog";
-import { useSidebar } from "@/app/_shadcn/components/ui/sidebar";
 import { cn } from "@/_lib/shadcn/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/app/_shadcn/components/ui/dialog";
 
 type Props = {
   title: string;
   shortTitle?: string;
   subtitle?: string;
+  sharedDialogContent?: React.ReactNode;
 };
 
 export default function PageHeader(props: Props) {
@@ -23,11 +27,16 @@ export default function PageHeader(props: Props) {
         <h2 className="text-xs font-bold opacity-75">{props.subtitle}</h2>
       </div>
       <div className="flex items-center p-2 gap-1">
-        <HomeShareDialog>
-          <Button size="icon" variant="ghost">
-            <ShareIcon />
-          </Button>
-        </HomeShareDialog>
+        {props.sharedDialogContent && (
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button size="icon" variant="ghost">
+                <ShareIcon />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>{props.sharedDialogContent}</DialogContent>
+          </Dialog>
+        )}
         <AuthBox />
       </div>
     </div>

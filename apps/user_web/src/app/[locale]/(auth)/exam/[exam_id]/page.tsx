@@ -13,8 +13,8 @@ import ExamAnswerSubmit from "./_components/ExamAnswerSubmit";
 import { getServerAuthUser } from "@/_lib/firebase/FirebaseAdminAuth";
 import { unstable_cache } from "next/cache";
 import { userExamAnswerHistoryCacheTag } from "@/app/_presets/_utils/cache";
-import PageHeader from "@/app/[locale]/_components/PageHeader";
 import PageLayout from "../../_components/PageLayout";
+import ExamShareDialogContent from "./_components/ExamShareDialogContent";
 
 type Props = {
   params: { locale: string; exam_id: string };
@@ -48,6 +48,7 @@ export default async function ExamPage(props: Props) {
       title={exam.title}
       shortTitle={exam.shortTitle}
       subtitle={exam.url}
+      sharedDialogContent={<ExamShareDialogContent id={props.params.exam_id} />}
     >
       <ExamLayout
         left={

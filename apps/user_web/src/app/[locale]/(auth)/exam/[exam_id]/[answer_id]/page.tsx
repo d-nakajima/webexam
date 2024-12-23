@@ -19,6 +19,7 @@ import {
   userExamAnswerHistoryCacheTag,
 } from "@/app/_presets/_utils/cache";
 import PageLayout from "../../../_components/PageLayout";
+import ShareAnswerDialogContent from "./_components/ShareAnswerDialogContent";
 
 type Props = {
   params: { locale: string; exam_id: string; answer_id: string };
@@ -60,6 +61,13 @@ export default async function AnswerPage(props: Props) {
         title={answer.examData.title}
         shortTitle={answer.examData.shortTitle}
         subtitle={answer.examData.url}
+        sharedDialogContent={
+          <ShareAnswerDialogContent
+            id={props.params.answer_id}
+            examId={props.params.exam_id}
+            isPublish={answer.isPublish}
+          />
+        }
       >
         <ExamLayout
           left={
