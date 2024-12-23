@@ -51,13 +51,13 @@ export const AnswerSchema = z.object({
   examData: ExamSchema,
   status: z.enum(["answered", "grading", "graded"]),
   isPublish: z.boolean(),
-  content: z.array(z.string()),
-  grades: z.array(
-    z.object({
+  content: z.string().array(),
+  grades: z
+    .object({
       point: z.number(),
       comment: z.string(),
     })
-  ),
+    .array(),
   whole_comment: z.string().optional(),
   score: z.number().optional(),
 });
