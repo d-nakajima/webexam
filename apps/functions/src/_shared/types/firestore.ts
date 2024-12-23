@@ -9,15 +9,17 @@ export type SampleType = z.infer<typeof SampleSchema>;
 export const ExamSchema = z.object({
   status: z.enum(["requested", "creating", "created"]),
   title: z.string(),
-  description: z.string(),
+  shortTitle: z.string(),
+  abstract: z.string(),
   url: z.string().url({
     message: "invalid_url",
   }),
   media: z.enum(["system", "twitter", "web_extension"]),
   questions: z.array(
     z.object({
+      title: z.string(),
+      description: z.string(),
       type: z.enum(["line_text", "free_text", "single_select", "multi_select"]),
-      question: z.string(),
       point: z.number(),
       options: z
         .object({

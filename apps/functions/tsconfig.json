@@ -7,9 +7,6 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
-    "paths": {
-      "@shared": ["./src/_shared/index.ts"]
-    },
     "esModuleInterop": true,
     "skipLibCheck": true
   },
