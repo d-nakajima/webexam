@@ -67,6 +67,7 @@ function buildQuestion(exam: z.infer<typeof InputSchema>["examData"]) {
     .map((q, index) => {
       return `
     ${index + 1}: ${q.title} (${q.point}点)\n
+    答え: ${q.answer}\n
     ${q.description}\n
     ${q.options ? q.options?.map((o, i) => `${i}: ${o.text}\n`).join("\n") : ""}
     `;

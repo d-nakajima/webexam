@@ -1,8 +1,8 @@
 import { initializeAdminSdk } from "@/_lib/firebase/FirebaseAdminInitializer";
 import { getFirestore } from "firebase-admin/firestore";
-import { examDocPath } from "./FirestorePath";
+import { answerDocPath, examDocPath } from "./FirestorePath";
 import { parseAdminReadDoc } from "@/_lib/firebase/AdminDocParser";
-import { ExamSchema } from "@/app/_shared";
+import { AnswerSchema, ExamSchema } from "@/app/_shared";
 
 initializeAdminSdk();
 
@@ -13,5 +13,15 @@ export function getExam(id: string) {
     .then((d) => {
       if (!d.exists) return null;
       return parseAdminReadDoc(d, ExamSchema);
+    });
+}
+
+export function getAnswer(id: string) {
+  return getFirestore()
+    .doc(answerDocPath(id))
+    .get()
+    .then((d) => {
+      if (!d.exists) return null;
+      return parseAdminReadDoc(d, AnswerSchema);
     });
 }
