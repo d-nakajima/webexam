@@ -41,6 +41,7 @@ resource "google_project_service" "default" {
     "storage.googleapis.com",
     "cloudfunctions.googleapis.com",
     "firebasehosting.googleapis.com",
+    "firebaseextensions.googleapis.com",
   ])
   service = each.key
   disable_on_destroy = false

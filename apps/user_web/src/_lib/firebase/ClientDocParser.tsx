@@ -44,6 +44,8 @@ export const ClientReadDocParser = <T extends z.AnyZodObject>(
     unknown
   >;
 
+  console.log("data", snapshot.data());
+
   const _createdAt = (createdAt as Timestamp).toDate();
   const _updatedAt = (updatedAt as Timestamp).toDate();
   const result = schema.parse(rest);
