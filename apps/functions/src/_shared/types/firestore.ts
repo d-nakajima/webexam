@@ -26,6 +26,7 @@ export const ExamSchema = z.object({
           text: z.string(),
           image: z.string().optional(),
         })
+        .array()
         .optional(),
       answer: z.string(),
     })

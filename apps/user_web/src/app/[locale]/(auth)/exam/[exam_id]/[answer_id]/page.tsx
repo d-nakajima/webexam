@@ -10,7 +10,7 @@ type Props = {
   params: { locale: string; exam_id: string; answer_id: string };
 };
 
-export default async function ExamPage(_props: Props) {
+export default async function AnswerPage(_props: Props) {
   return (
     <ExamLayout
       left={

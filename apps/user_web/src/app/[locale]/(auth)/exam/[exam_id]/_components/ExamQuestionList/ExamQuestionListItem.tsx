@@ -90,8 +90,8 @@ export default async function ExamQuestionListItem(props: Props) {
           <div>{props.number}.</div>
           <div>{props.title}</div>
         </div>
-        <div className="my-1">{props.description}</div>
-        <div className="my-2">{component}</div>
+        <div className="mt-2 text-sm">{props.description}</div>
+        <div className="my-5">{component}</div>
         {props.comment && (
           <div className="my-2 bg-black border rounded-md py-2 px-3 whitespace-pre-wrap break-words w-full">
             {props.comment}

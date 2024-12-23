@@ -14,7 +14,7 @@ export default function ExamIndexItem(props: Props) {
       <span className="w-4 shrink-0">{`${props.number}.`}</span>
       <Link
         href={`#${props.id}`}
-        className="whitespace-pre-wrap break-words overflow-hidden w-min"
+        className="whitespace-pre-wrap break-words overflow-hidden"
       >
         {props.title}
       </Link>
