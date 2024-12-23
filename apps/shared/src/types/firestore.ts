@@ -46,8 +46,9 @@ export const UserSchema = z.object({
 export type UserType = z.infer<typeof UserSchema>;
 
 export const AnswerSchema = z.object({
-  userRef: z.string(),
-  questionRef: z.string(),
+  userId: z.string(),
+  examId: z.string(),
+  examData: ExamSchema,
   status: z.enum(["answered", "grading", "graded"]),
   isPublish: z.boolean(),
   content: z.array(z.string()),

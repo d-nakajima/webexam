@@ -7,6 +7,7 @@ import ExamLayout from "./_components/ExamLayout";
 import ExamQuestionList from "./_components/ExamQuestionList";
 import ExamQuestionListItem from "./_components/ExamQuestionList/ExamQuestionListItem";
 import { notFound } from "next/navigation";
+import ExamAnswerSubmit from "./_components/ExamAnswerSubmit";
 
 type Props = {
   params: { locale: string; exam_id: string };
@@ -39,23 +40,28 @@ export default async function ExamPage(props: Props) {
         </ExamAnswerHistory>
       }
     >
-      <div>
-        <ExamQuestionList>
-          {exam.questions.map((question, index) => (
-            <ExamQuestionListItem
-              key={index}
-              mode="edit"
-              number={index + 1}
-              type={question.type}
-              title={question.title}
-              description={question.description}
-              options={
-                question.options?.map((option, index) => option.text) || []
-              }
-            />
-          ))}
-        </ExamQuestionList>
-      </div>
+      <form className="flex flex-col h-full">
+        <div className="flex-grow">
+          <ExamQuestionList>
+            {exam.questions.map((question, index) => (
+              <ExamQuestionListItem
+                key={index}
+                mode="edit"
+                number={index + 1}
+                type={question.type}
+                title={question.title}
+                description={question.description}
+                options={
+                  question.options?.map((option, index) => option.text) || []
+                }
+              />
+            ))}
+          </ExamQuestionList>
+        </div>
+        <div className="flex mt-4 self-end">
+          <ExamAnswerSubmit exam={exam} />
+        </div>
+      </form>
     </ExamLayout>
   );
 }

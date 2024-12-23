@@ -4,6 +4,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { z } from "zod";
+import { ReadDoc } from "./ReadDoc";
 
 export const ClientUpdateDocParser = <T extends z.AnyZodObject>(
   schema: T,
@@ -38,13 +39,11 @@ export type ClientReadDoc<T> = {
 export const ClientReadDocParser = <T extends z.AnyZodObject>(
   schema: T,
   snapshot: DocumentSnapshot
-): ClientReadDoc<z.infer<T>> => {
+): ReadDoc<z.infer<T>> => {
   const { createdAt, updatedAt, ...rest } = snapshot.data() as Record<
     string,
     unknown
   >;
-
-  console.log("data", snapshot.data());
 
   const _createdAt = (createdAt as Timestamp).toDate();
   const _updatedAt = (updatedAt as Timestamp).toDate();
@@ -53,7 +52,7 @@ export const ClientReadDocParser = <T extends z.AnyZodObject>(
   return {
     ...result,
     id: snapshot.id,
-    snapshot,
+    path: snapshot.ref.path,
     createdAt: _createdAt,
     updatedAt: _updatedAt,
   };

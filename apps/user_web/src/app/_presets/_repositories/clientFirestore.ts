@@ -5,13 +5,17 @@ import {
   getFirestore,
   onSnapshot,
 } from "firebase/firestore";
-import { examCollectionPath, examDocPath } from "./FirestorePath";
+import {
+  answerCollectionPath,
+  examCollectionPath,
+  examDocPath,
+} from "./FirestorePath";
 import {
   ClientCreateDocParser,
-  ClientReadDoc,
   ClientReadDocParser,
 } from "@/_lib/firebase/ClientDocParser";
-import { ExamSchema, ExamType } from "@/app/_shared";
+import { AnswerSchema, AnswerType, ExamSchema, ExamType } from "@/app/_shared";
+import { ReadDoc } from "@/_lib/firebase/ReadDoc";
 
 export function _collection(path: string) {
   return collection(getFirestore(), path);
@@ -38,11 +42,20 @@ export function createExam(url: string) {
 
 export function listenExam(
   id: string,
-  callback: (exam: ClientReadDoc<ExamType>) => void
+  callback: (exam: ReadDoc<ExamType>) => void
 ) {
   return onSnapshot(_doc(examDocPath(id)), (doc) => {
     if (!doc.exists()) return null;
     console.log("doc", doc);
     return callback(ClientReadDocParser(ExamSchema, doc));
   });
+}
+
+export function submitAnswer(answer: AnswerType) {
+  return addDoc(
+    _collection(answerCollectionPath()),
+    ClientCreateDocParser(AnswerSchema, {
+      ...answer,
+    })
+  );
 }

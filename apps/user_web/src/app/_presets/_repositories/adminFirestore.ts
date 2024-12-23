@@ -12,8 +12,6 @@ export function getExam(id: string) {
     .get()
     .then((d) => {
       if (!d.exists) return null;
-      const data = d.data();
-      if (!data) return null;
-      return parseAdminReadDoc(data, ExamSchema);
+      return parseAdminReadDoc(d, ExamSchema);
     });
 }

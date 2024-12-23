@@ -44,10 +44,6 @@ export default function HomeScreen() {
       } else {
         setIsGenerating(true);
       }
-
-      setTimeout(() => {
-        setIsGenerating(false);
-      }, 20_000);
     });
   };
 

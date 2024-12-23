@@ -1,5 +1,6 @@
 import { DocumentSnapshot, Timestamp } from "firebase-admin/firestore";
 import { z } from "zod";
+import { ReadDoc } from "./ReadDoc";
 
 export const parseAdminUpdateDoc = <T extends z.AnyZodObject>(
   data: object & {
@@ -30,23 +31,29 @@ export const AdminCreateDocParser = <T extends z.AnyZodObject>(
 
 export type AdminReadDoc<T> = {
   id: string;
-  snapshot: DocumentSnapshot;
+  path: string;
   createdAt: Date;
   updatedAt: Date;
 } & T;
 
 export const parseAdminReadDoc = <T extends z.AnyZodObject>(
-  data: object,
+  snapshot: DocumentSnapshot,
   schema: T
-) => {
-  const { createdAt, updatedAt } = data as Record<string, unknown>;
+): ReadDoc<T["_type"]> => {
+  const { createdAt, updatedAt, ...rest } = snapshot.data() as Record<
+    string,
+    unknown
+  >;
+
   const _createdAt = (createdAt as Timestamp).toDate();
   const _updatedAt = (updatedAt as Timestamp).toDate();
-  const result = schema.parse(data);
+  const result = schema.parse(rest);
 
   return {
     ...result,
+    id: snapshot.id,
+    path: snapshot.ref.path,
     createdAt: _createdAt,
     updatedAt: _updatedAt,
-  } as AdminReadDoc<T["_type"]>;
+  };
 };
