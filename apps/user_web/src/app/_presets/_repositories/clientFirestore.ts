@@ -7,6 +7,7 @@ import {
 } from "firebase/firestore";
 import {
   answerCollectionPath,
+  answerDocPath,
   examCollectionPath,
   examDocPath,
 } from "./FirestorePath";
@@ -58,4 +59,14 @@ export function submitAnswer(answer: AnswerType) {
       ...answer,
     })
   );
+}
+
+export function listenAnswer(
+  id: string,
+  callback: (answer: ReadDoc<AnswerType>) => void
+) {
+  return onSnapshot(_doc(answerDocPath(id)), (doc) => {
+    if (!doc.exists()) return null;
+    return callback(ClientReadDocParser(AnswerSchema, doc));
+  });
 }

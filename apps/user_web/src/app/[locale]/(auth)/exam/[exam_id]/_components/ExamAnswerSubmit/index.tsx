@@ -1,19 +1,26 @@
 "use client";
 import { useAuth } from "@/_lib/firebase/FirebaseAuthProvider";
 import { ReadDoc } from "@/_lib/firebase/ReadDoc";
+import { useRouter } from "@/_lib/i18n/routing";
 import { submitAnswer } from "@/app/_presets/_repositories/clientFirestore";
+import { answerRoutePath } from "@/app/_presets/_utils/route_builder";
 import { Button } from "@/app/_shadcn/components/ui/button";
 import { AnswerType, ExamType } from "@/app/_shared";
+import { useState } from "react";
 
 type Props = {
   exam: ReadDoc<ExamType>;
 };
 
 export default function ExamAnswerSubmit(props: Props) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { authUser } = useAuth();
+  const { push } = useRouter();
 
   if (!authUser) return null;
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    setIsSubmitting(true);
+
     const answers: string[] = [];
     props.exam.questions.forEach((question, index) => {
       if (question.type === "single_select") {
@@ -48,10 +55,12 @@ export default function ExamAnswerSubmit(props: Props) {
       grades: [],
     };
 
-    submitAnswer(answer);
+    const answerRef = await submitAnswer(answer);
+    push(answerRoutePath(props.exam.id, answerRef.id));
   };
+
   return (
-    <Button type="button" onClick={onSubmit}>
+    <Button type="button" onClick={onSubmit} disabled={isSubmitting}>
       Submit
     </Button>
   );

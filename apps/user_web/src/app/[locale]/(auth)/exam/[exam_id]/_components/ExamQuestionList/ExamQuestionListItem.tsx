@@ -6,7 +6,7 @@ import {
   RadioGroupItem,
 } from "@/app/_shadcn/components/ui/radio-group";
 import { Textarea } from "@/app/_shadcn/components/ui/textarea";
-import { getGradeIconFromRate } from "../../_utils/getGradeIcon";
+import GradeSuspendedIcon from "./GradeSuspendedIcon";
 
 type QuestionBase = {
   number: number;
@@ -68,24 +68,23 @@ export default async function ExamQuestionListItem(props: Props) {
       break;
   }
 
-  let grade: React.ReactNode | undefined;
-  if (props.mode === "view" && props.gradeRate !== undefined) {
-    grade = getGradeIconFromRate(props.gradeRate);
-  }
-
   return (
     <div className="flex items-start">
       <div className="flex-grow">
         <div className="flex font-bold items-center text-lg gap-1">
-          {grade && <div className="text-sm w-4 -ml-5">{grade}</div>}
+          <div className="text-sm w-4 -ml-5">
+            {props.mode === "view" && (
+              <GradeSuspendedIcon gradeRate={props.gradeRate} />
+            )}
+          </div>
           <div>{props.number}.</div>
           <div>{props.title}</div>
         </div>
         <div className="mt-2 text-sm">{props.description}</div>
         <div className="my-5">{component}</div>
-        {props.comment && (
-          <div className="my-2 bg-black border rounded-md py-2 px-3 whitespace-pre-wrap break-words w-full">
-            {props.comment}
+        {props.mode === "view" && (
+          <div className="my-2 text-sm bg-black border rounded-md py-2 px-3 whitespace-pre-wrap break-words w-full">
+            {props.comment || "AI採点中..."}
           </div>
         )}
       </div>
@@ -175,6 +174,9 @@ function OneLineTextQuestion(props: OneLineTextQuestion) {
         defaultValue={props.answer}
         disabled={props.mode === "view"}
       />
+      {props.correctAnswer && props.mode === "view" && (
+        <div className="text-sm mt-2">正答例: {props.correctAnswer}</div>
+      )}
     </div>
   );
 }
@@ -187,6 +189,9 @@ function FreeTextQuestion(props: FreeTextQuestion) {
         defaultValue={props.answer}
         disabled={props.mode === "view"}
       />
+      {props.correctAnswer && props.mode === "view" && (
+        <div className="text-sm mt-2">正答例: {props.correctAnswer}</div>
+      )}
     </div>
   );
 }
