@@ -12,13 +12,14 @@ import { Link } from "@/_lib/i18n/routing";
 type Props = object;
 
 export default function SidebarTop(_props: Props) {
-  const { open } = useSidebar();
+  const { open, isMobile } = useSidebar();
 
   return (
     <div
       className="flex items-center h-full transition-all ease-linear md:w-[var(--sidebar-width)]"
       style={{
-        width: open ? undefined : "108px",
+        width:
+          isMobile || !open ? "var(--sidebar-top-collapse-width)" : undefined,
       }}
     >
       <Button asChild size="icon" variant="ghost">

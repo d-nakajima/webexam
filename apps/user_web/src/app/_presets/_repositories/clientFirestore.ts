@@ -6,6 +6,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import {
@@ -17,6 +18,7 @@ import {
 import {
   ClientCreateDocParser,
   ClientReadDocParser,
+  parseClientUpdateDoc,
 } from "@/_lib/firebase/ClientDocParser";
 import { AnswerSchema, AnswerType, ExamSchema, ExamType } from "@/app/_shared";
 import { ReadDoc } from "@/_lib/firebase/ReadDoc";
@@ -89,4 +91,22 @@ export function listenUserAnswers(
     );
     return callback(answers);
   });
+}
+
+export function publishAnswer(id: string) {
+  return updateDoc(
+    _doc(answerDocPath(id)),
+    parseClientUpdateDoc(AnswerSchema, {
+      isPublish: true,
+    })
+  );
+}
+
+export function unpublishAnswer(id: string) {
+  return updateDoc(
+    _doc(answerDocPath(id)),
+    parseClientUpdateDoc(AnswerSchema, {
+      isPublish: false,
+    })
+  );
 }
