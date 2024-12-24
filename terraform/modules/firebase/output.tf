@@ -4,6 +4,6 @@ output "firebase_config_base64" {
 
 
 output "admin_sdk_service_account_key_base64" {
-  value = google_service_account_key.admin_sdk.private_key
+  value     = google_service_account_key.admin_sdk.private_key
   sensitive = true
 }

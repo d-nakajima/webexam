@@ -20,8 +20,24 @@ git remote add origin https://github.com/__username__/__name__
 
 [terraformのREADME](./terraform/README.md)を参照
 
-2. firebaseの設定
+
+2. analyticsの有効化(terraform管理不可)
+
+```bash
+gcloud auth application-default login
+# プロジェクトルート
+bash ./scripts/add_analytics.sh
+# terraformの各環境にて、vercel_envにmesurement_idを反映
+terraform apply
+```
+
+3. 環境変数の出力
+
+```bash
+cd terraform environments/dev
+bash ../_scripts/output_local_env.sh # web appの.envに追加する
+```
+
+4. firebaseの設定
 
 `.firebaserc`に任意の設定を登録
-
-3. 

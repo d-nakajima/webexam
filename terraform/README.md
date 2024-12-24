@@ -33,6 +33,7 @@ terraform apply -auto-approve
 ### 各環境毎のインフラを構築 (./encironments/_env_)
 
 `./environemnts/(env)/terraform.tfvars` を編集
+`./environemnts/(env)/main.tf` のbackend > prefixを編集
 
 ```bash
 terraform init

@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "webexam-dev-test3"
+    "default": "webexam-dev",
+    "dev": "webexam-dev",
+    "prod": "webexam-prod"
   }
 }

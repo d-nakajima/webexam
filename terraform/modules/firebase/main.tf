@@ -11,9 +11,9 @@ terraform {
 
 # GCPプロジェクトの作成
 resource "google_project" "default" {
-  provider   = google-beta.no_user_project_override
-  name       = var.project_id
-  project_id = var.project_id
+  provider        = google-beta.no_user_project_override
+  name            = var.project_id
+  project_id      = var.project_id
   billing_account = var.billing_account
   deletion_policy = "DELETE"
 
@@ -25,7 +25,7 @@ resource "google_project" "default" {
 # 各APIの有効化
 resource "google_project_service" "default" {
   provider = google-beta.no_user_project_override
-  project = google_project.default.project_id
+  project  = google_project.default.project_id
   for_each = toset([
     "serviceusage.googleapis.com",
     "cloudbuild.googleapis.com",
@@ -43,7 +43,7 @@ resource "google_project_service" "default" {
     "firebasehosting.googleapis.com",
     "firebaseextensions.googleapis.com",
   ])
-  service = each.key
+  service            = each.key
   disable_on_destroy = false
 }
 
@@ -59,7 +59,7 @@ resource "google_firebase_project" "default" {
 
 # Firestore
 resource "google_firestore_database" "default" {
-  provider   = google-beta.no_user_project_override
+  provider                    = google-beta.no_user_project_override
   project                     = google_project.default.project_id
   name                        = "(default)"
   location_id                 = var.region
@@ -74,7 +74,7 @@ resource "google_firestore_database" "default" {
 
 # Firebase の Cloud Storage を使用するには 先に App Engine の有効化が必要
 resource "google_app_engine_application" "default" {
-  provider   = google-beta
+  provider    = google-beta
   project     = google_project.default.project_id
   location_id = var.region
 
@@ -86,12 +86,12 @@ resource "google_app_engine_application" "default" {
 
 # Storage バケット
 resource "google_storage_bucket" "default" {
-  provider   = google-beta
-  project   = google_project.default.project_id
-  name     = google_project.default.project_id
-  location = var.region
-  storage_class = "STANDARD"
-  force_destroy = true
+  provider                    = google-beta
+  project                     = google_project.default.project_id
+  name                        = google_project.default.project_id
+  location                    = var.region
+  storage_class               = "STANDARD"
+  force_destroy               = true
   uniform_bucket_level_access = true
   depends_on = [
     google_app_engine_application.default,
@@ -99,15 +99,18 @@ resource "google_storage_bucket" "default" {
 }
 
 resource "google_firebase_storage_bucket" "default" {
-  provider   = google-beta
+  provider  = google-beta
   project   = google_project.default.project_id
   bucket_id = google_storage_bucket.default.id
+  depends_on = [
+    google_project_service.default
+  ]
 }
 
 
 # FirebaseAuthenticationの有効化
 resource "google_identity_platform_config" "default" {
-  provider   = google-beta
+  provider = google-beta
   project  = google_project.default.project_id
 
   # Providerによる認証については。google credentialsの情報が必要であり、
@@ -117,6 +120,14 @@ resource "google_identity_platform_config" "default" {
   sign_in {
     anonymous {
       enabled = var.enable_anonymous_signin
+    }
+    email {
+      enabled           = false
+      password_required = false
+    }
+    phone_number {
+      enabled            = false
+      test_phone_numbers = {}
     }
   }
 
@@ -137,34 +148,28 @@ resource "google_firebase_web_app" "default" {
 }
 
 resource "google_service_account" "admin_sdk" {
-  provider = google-beta
-  project = google_project.default.project_id
-  account_id = "terraform-admin-sdk"
+  provider     = google-beta
+  project      = google_project.default.project_id
+  account_id   = "terraform-admin-sdk"
   display_name = "Admin SDK created by Terraform"
 }
 
 resource "google_project_iam_member" "token_creator" {
   provider = google-beta
-  project = google_project.default.project_id
-  role    = "roles/iam.serviceAccountTokenCreator"
-  member  = "serviceAccount:${google_service_account.admin_sdk.email}"
-  depends_on = [
-    google_project_service.default
-  ]
+  project  = google_project.default.project_id
+  role     = "roles/iam.serviceAccountTokenCreator"
+  member   = "serviceAccount:${google_service_account.admin_sdk.email}"
 }
 
 resource "google_project_iam_member" "admin_sdk" {
   provider = google-beta
-  project = google_project.default.project_id
-  role    = "roles/firebase.sdkAdminServiceAgent"
-  member  = "serviceAccount:${google_service_account.admin_sdk.email}"
-  depends_on = [
-    google_project_service.default
-  ]
+  project  = google_project.default.project_id
+  role     = "roles/firebase.sdkAdminServiceAgent"
+  member   = "serviceAccount:${google_service_account.admin_sdk.email}"
 }
 
 resource "google_service_account_key" "admin_sdk" {
-  provider = google-beta
+  provider           = google-beta
   service_account_id = google_service_account.admin_sdk.name
 }
 

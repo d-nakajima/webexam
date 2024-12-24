@@ -1,21 +1,21 @@
 variable "project_id" {
   description = "The project ID"
-  type = string
-  nullable = false
+  type        = string
+  nullable    = false
 }
 
 variable "billing_account" {
   description = "Billing account ID for the project"
-  type = string
-  nullable = false
+  type        = string
+  nullable    = false
 }
 
 variable "region" {
-  type = string
+  type     = string
   nullable = false
 }
 
 variable "enable_anonymous_signin" {
-  type = bool
+  type    = bool
   default = false
 }
