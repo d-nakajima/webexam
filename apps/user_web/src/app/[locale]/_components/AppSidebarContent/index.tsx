@@ -15,7 +15,7 @@ export default function AppSidebarContent() {
     return listenUserAnswers(authUser.uid, (answers) => {
       setAnswers(answers);
     });
-  }, []);
+  }, [authUser.uid]);
 
   return (
     <div className="flex flex-col items-stretch w-full h-full">

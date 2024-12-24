@@ -19,7 +19,7 @@ import {
 } from "@/app/_shadcn/components/ui/dropdown-menu";
 
 export default function AuthBox() {
-  const { authUser } = useAuth();
+  const { authUser, login, logout } = useAuth();
 
   return (
     <DropdownMenu>
@@ -43,13 +43,13 @@ export default function AuthBox() {
         {authUser?.isAnonymous ? (
           <>
             <DropdownMenuLabel>Sign in/up</DropdownMenuLabel>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => login("google", { reload: true })}>
               <AppImage {...GoogleIcon} className="w-4 h-4" alt="google" />
               <span>Login with Google</span>
             </DropdownMenuItem>
           </>
         ) : (
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => logout({ reload: true })}>
             <LogOut />
             <span>Log out</span>
           </DropdownMenuItem>
