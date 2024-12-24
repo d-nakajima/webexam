@@ -126,10 +126,10 @@ const AuthProvider: React.FC<Props> = ({ children, loginComponent: _ }) => {
           })
           .catch(async (error) => {
             console.log("Error upgrading anonymous account", error);
-            // const isConfirmed = window.confirm(
-            //   "This email is already in use.\nDo you want to sign in with this account?\nYour card created as guest will be lost."
-            // );
-            // if (!isConfirmed) return;
+            const isConfirmed = window.confirm(
+              "This email is already in use.\nDo you want to sign in with this account?\nYour card created as guest will be lost."
+            );
+            if (!isConfirmed) return;
             await signInWithPopup(auth, provider);
           });
       } else if (provider === "github") {

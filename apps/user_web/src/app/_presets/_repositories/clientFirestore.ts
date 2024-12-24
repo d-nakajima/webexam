@@ -52,7 +52,6 @@ export function listenExam(
 ) {
   return onSnapshot(_doc(examDocPath(id)), (doc) => {
     if (!doc.exists()) return null;
-    console.log("doc", doc);
     return callback(ClientReadDocParser(ExamSchema, doc));
   });
 }

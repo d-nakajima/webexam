@@ -90,8 +90,9 @@ export default async function AnswerPage(props: Props) {
         >
           <div className="flex flex-col h-full">
             <Card className="mb-6 text-sm">
-              <CardHeader>【{answer.examData.title}】</CardHeader>
-              <CardContent>{answer.examData.abstract}</CardContent>
+              <CardContent className="p-6">
+                {answer.examData.abstract}
+              </CardContent>
             </Card>
             <div className="flex-grow">
               <ExamQuestionList>

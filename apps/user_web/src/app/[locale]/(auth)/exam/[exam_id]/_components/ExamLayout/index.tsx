@@ -14,7 +14,7 @@ export default function ExamLayout(props: Props) {
           {props.left}
           <div className="xl:hidden my-10 max-sm:my-5">{props.right}</div>
         </div>
-        <div className="relative col-span-8 top-[calc(var(--header-height))] w-full h-full min-h-[calc(100vh-40px-var(--header-height))] max-w-3xl m-auto max-sm:col-span-1">
+        <div className="relative col-span-8 top-[calc(var(--header-height))] w-full h-full min-h-[calc(100vh-40px-var(--header-height))] max-w-2xl m-auto max-sm:col-span-1 max-sm:mt-5">
           {props.children}
         </div>
         <div className="sticky top-[calc(var(--header-height)+20px)] col-span-2 max-xl:hidden">

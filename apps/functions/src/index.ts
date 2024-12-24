@@ -42,9 +42,24 @@ export const onCreateAnswer = onDocumentCreated(
     const original = parseAdminReadDoc(snap.data.data(), AnswerSchema);
     const { data } = await gradeAnswer(original);
 
+    const questions = original.examData.questions;
+    const totalQuestionPoint = questions.reduce(
+      (acc, question) => acc + question.point,
+      0
+    );
+
+    const rawScore = data.grades.reduce((acc, grade, index) => {
+      const questionPoint = questions[index].point;
+      return acc + grade.rate * questionPoint;
+    }, 0);
+
+    // 最大10になるように正規化
+    const score = 10 * (rawScore / totalQuestionPoint);
+
     setGradedAnswer(snap.document, {
       ...original,
       ...data,
+      score,
       status: "graded",
     });
     return;

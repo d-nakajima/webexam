@@ -12,7 +12,7 @@ export default function ExamSummaryListItem(props: Props) {
     <div className="flex items-center w-full gap-2 hover:opacity-75">
       <div className="flex-grow min-w-0">
         <div className="text-sm leading-tight">{props.title}</div>
-        <div className="text-xs opacity-75 leading-tight text-ellipsis overflow-hidden ">
+        <div className="text-xs opacity-75 leading-tight text-ellipsis overflow-hidden whitespace-nowrap">
           {props.url}
         </div>
       </div>
