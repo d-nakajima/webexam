@@ -6,7 +6,6 @@ import React, {
   useState,
   useEffect,
   ReactNode,
-  useCallback,
 } from "react";
 import {
   User as AuthUser,
@@ -23,13 +22,19 @@ import { useTranslations } from "next-intl";
 import { deleteAuthCookie, setAuthCookie } from "./FirebaseAdminAuthPreparer";
 
 type SupportProvider = "google" | "github";
+type AuthChangeOption = {
+  reload?: boolean;
+};
 interface AuthContextType {
   isInitialized: boolean;
   authUser: AuthUser | null;
   signUp: () => Promise<void>;
   signIn: () => Promise<void>;
-  login: (provider: SupportProvider) => Promise<void>;
-  logout: () => Promise<void>;
+  login: (
+    provider: SupportProvider,
+    options?: AuthChangeOption
+  ) => Promise<void>;
+  logout: (options?: AuthChangeOption) => Promise<void>;
 }
 
 const defaultAuthContext: AuthContextType = {
@@ -101,7 +106,10 @@ const AuthProvider: React.FC<Props> = ({ children, loginComponent: _ }) => {
     }
   };
 
-  const login = async (provider: SupportProvider) => {
+  const login = async (
+    provider: SupportProvider,
+    options?: AuthChangeOption
+  ) => {
     const auth = getAuth();
     if (!auth.currentUser) {
       setAuthUser(auth.currentUser);
@@ -118,28 +126,31 @@ const AuthProvider: React.FC<Props> = ({ children, loginComponent: _ }) => {
           })
           .catch(async (error) => {
             console.log("Error upgrading anonymous account", error);
-            const isConfirmed = window.confirm(
-              "This email is already in use.\nDo you want to sign in with this account?\nYour card created as guest will be lost."
-            );
-            if (!isConfirmed) return;
+            // const isConfirmed = window.confirm(
+            //   "This email is already in use.\nDo you want to sign in with this account?\nYour card created as guest will be lost."
+            // );
+            // if (!isConfirmed) return;
             await signInWithPopup(auth, provider);
           });
       } else if (provider === "github") {
         await signInWithPopup(auth, new GithubAuthProvider());
       }
+
+      if (options?.reload) window.location.reload();
     } catch (error) {
       console.error("Login error:", error);
     }
   };
 
-  const logout = useCallback(async () => {
+  const logout = async (options?: AuthChangeOption) => {
     const auth = getAuth();
     try {
       await signOut(auth);
+      if (options?.reload) window.location.reload();
     } catch (error) {
       console.error("Logout error:", error);
     }
-  }, []);
+  };
 
   if (!isInitialized) return <></>;
 
