@@ -17,8 +17,6 @@ import {
   signOut,
   signInAnonymously,
   linkWithPopup,
-  signInWithRedirect,
-  fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import { useTranslations } from "next-intl";
 import { deleteAuthCookie, setAuthCookie } from "./FirebaseAdminAuthPreparer";
