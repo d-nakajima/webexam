@@ -1,6 +1,9 @@
 "use client";
 import ShareButtons from "@/app/_presets/_components/SnsShareButtons";
-import { publishAnswer } from "@/app/_presets/_repositories/clientFirestore";
+import {
+  publishAnswer,
+  unpublishAnswer,
+} from "@/app/_presets/_repositories/clientFirestore";
 import {
   answerRoutePath,
   examRoutePath,
@@ -17,18 +20,18 @@ type Props = {
 };
 
 export default function ShareAnswerDialogContent(props: Props) {
-  const [url, setUrl] = useState(
+  const [answerSharedPath, setAnswerSharedPath] = useState(
     props.isPublish ? answerRoutePath(props.examId, props.id) : ""
   );
 
   const publish = async () => {
     await publishAnswer(props.id);
-    setUrl(answerRoutePath(props.examId, props.id));
+    setAnswerSharedPath(answerRoutePath(props.examId, props.id));
   };
 
   const unpublish = async () => {
-    await publishAnswer(props.id);
-    setUrl("");
+    await unpublishAnswer(props.id);
+    setAnswerSharedPath("");
   };
 
   return (
@@ -38,7 +41,7 @@ export default function ShareAnswerDialogContent(props: Props) {
         問題を友達に共有して、一緒に解くことができます
       </div>
       <div>
-        <ShareButtons url={examRoutePath(props.examId)} />
+        <ShareButtons path={examRoutePath(props.examId)} />
       </div>
       <Separator />
       <div className="flex gap-5 text-xs items-center">
@@ -64,7 +67,7 @@ export default function ShareAnswerDialogContent(props: Props) {
         </div>
       </div>
       <div>
-        <ShareButtons url={url} />
+        <ShareButtons path={answerSharedPath} />
       </div>
     </>
   );

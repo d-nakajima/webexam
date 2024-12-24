@@ -11,29 +11,39 @@ import NoteIcon from "./note.png";
 import { LinkIcon } from "lucide-react";
 import { useToast } from "@/_lib/shadcn/hooks/use-toast";
 import AppImage from "@/app/_presets/_components/AppImage";
+import { getVercelOrigin } from "../../_utils/url";
+import { useLocale } from "next-intl";
 
-type Props = {
-  url: string;
-  hashtags?: string[];
-};
+type Props = { hashtags?: string[] } & ({ url: string } | { path: string });
+
 export default function ShareButtons(props: Props) {
+  const locale = useLocale();
+  let url: string;
+  if ("url" in props) {
+    url = props.url;
+  } else if ("path" in props) {
+    url = props.path ? `${getVercelOrigin()}/${locale}/${props.path}` : "";
+  } else {
+    throw new Error("url is empty");
+  }
+
   return (
     <div className="text-sm flex gap-10 w-full justify-center my-5 h-10">
-      <ButtonWrapper disabled={!props.url}>
-        <TwitterShareButton url={props.url + "\n\n"} hashtags={props.hashtags}>
+      <ButtonWrapper disabled={!url}>
+        <TwitterShareButton url={url + "\n\n"} hashtags={props.hashtags}>
           <TwitterIcon round size="48" />
         </TwitterShareButton>
       </ButtonWrapper>
-      <ButtonWrapper disabled={!props.url}>
-        <FacebookShareButton url={props.url}>
+      <ButtonWrapper disabled={!url}>
+        <FacebookShareButton url={url}>
           <FacebookIcon round size="48" />
         </FacebookShareButton>
       </ButtonWrapper>
-      <ButtonWrapper disabled={!props.url}>
-        <NoteShareButton url={props.url} hashtags={props.hashtags} />
+      <ButtonWrapper disabled={!url}>
+        <NoteShareButton url={url} hashtags={props.hashtags} />
       </ButtonWrapper>
-      <ButtonWrapper disabled={!props.url}>
-        <CopyUrlButton url={props.url} />
+      <ButtonWrapper disabled={!url}>
+        <CopyUrlButton url={url} />
       </ButtonWrapper>
     </div>
   );

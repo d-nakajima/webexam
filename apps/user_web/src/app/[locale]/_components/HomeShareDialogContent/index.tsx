@@ -1,4 +1,5 @@
 import ShareButtons from "@/app/_presets/_components/SnsShareButtons";
+import { homeRoutePath } from "@/app/_presets/_utils/route_builder";
 import { DialogTitle } from "@/app/_shadcn/components/ui/dialog";
 
 export default function HomeShareDialogContent() {
@@ -9,7 +10,7 @@ export default function HomeShareDialogContent() {
         このアプリを友達にシェアしてみましょう
       </div>
       <div>
-        <ShareButtons url="https://google.com" />
+        <ShareButtons path={homeRoutePath()} />
       </div>
     </>
   );
