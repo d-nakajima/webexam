@@ -50,6 +50,7 @@ export default async function AnswerPage(props: Props) {
 
   const answer = await cacheGetAnswer(props.params.answer_id);
   if (!answer) return notFound();
+  console.log(answer, auth.uid);
   if (answer.userId !== auth.uid && !answer.isPublish) return notFound();
 
   return (

@@ -14,7 +14,7 @@ export default function ExamShareDialogContent(props: Props) {
         問題を友達に共有して、一緒に解くことができます
       </div>
       <div>
-        <ShareButtons url={examRoutePath(props.id)} />
+        <ShareButtons path={examRoutePath(props.id)} />
       </div>
     </>
   );

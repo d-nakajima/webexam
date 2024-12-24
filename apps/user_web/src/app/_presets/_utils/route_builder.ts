@@ -1,5 +1,5 @@
 export function homeRoutePath() {
-  return "/home";
+  return "/";
 }
 
 export function examRoutePath(id: string) {
