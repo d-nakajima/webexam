@@ -1,27 +1,15 @@
-"use client";
-
 import { Button } from "@/app/_shadcn/components/ui/button";
-import {
-  SidebarTrigger,
-  useSidebar,
-} from "@/app/_shadcn/components/ui/sidebar";
+import { SidebarTrigger } from "@/app/_shadcn/components/ui/sidebar";
 import { FilePlusIcon, SearchIcon, SidebarIcon } from "lucide-react";
 import SearchDialog from "../SearchDialog";
 import { Link } from "@/_lib/i18n/routing";
+import SidebarTopLayout from "./SidebarTopLayout";
 
 type Props = object;
 
-export default function SidebarTop(_props: Props) {
-  const { open, isMobile } = useSidebar();
-
+export default async function SidebarTop(_props: Props) {
   return (
-    <div
-      className="flex items-center h-full transition-all ease-linear md:w-[var(--sidebar-width)]"
-      style={{
-        width:
-          isMobile || !open ? "var(--sidebar-top-collapse-width)" : undefined,
-      }}
-    >
+    <SidebarTopLayout>
       <Button asChild size="icon" variant="ghost">
         <SidebarTrigger>
           <SidebarIcon size={16} />
@@ -38,6 +26,6 @@ export default function SidebarTop(_props: Props) {
           <FilePlusIcon size={16} />
         </Button>
       </Link>
-    </div>
+    </SidebarTopLayout>
   );
 }

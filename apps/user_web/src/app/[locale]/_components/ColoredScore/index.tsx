@@ -7,7 +7,7 @@ type Props = {
 
 export default function ColoredScore(props: Props) {
   let scoreColor: string;
-  if (!props.score)
+  if (props.score === undefined)
     return <ReactLoading type="spin" color="#000" width="14" height="14" />;
 
   if (props.score >= 8) {

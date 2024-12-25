@@ -16,6 +16,7 @@ export function isUrl(url: string) {
     new URL(url);
     return true;
   } catch (e) {
+    console.log(e);
     return false;
   }
 }
