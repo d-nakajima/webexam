@@ -1,12 +1,9 @@
-"use server";
 import { initializeAdminSdk } from "@/_lib/firebase/FirebaseAdminInitializer";
 import { getFirestore } from "firebase-admin/firestore";
 import { answerDocPath, examDocPath } from "./FirestorePath";
 import { parseAdminReadDoc } from "@/_lib/firebase/AdminDocParser";
 import { AnswerSchema, ExamSchema } from "@/app/_shared";
 import { isAfter } from "date-fns";
-
-
 
 initializeAdminSdk();
 

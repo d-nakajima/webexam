@@ -16,7 +16,7 @@ resource "vercel_project" "with_git" {
   ignore_command = <<EOT
 #!/bin/bash
 # "root_directory" 以下に差分が無ければビルドをスキップ
-if git diff --quiet HEAD^ HEAD -- ${var.root_directory}/; then
+if git diff --quiet HEAD^ HEAD -- ./; then
   echo "No changes in root_directory. Skipping build."
   exit 0
 else

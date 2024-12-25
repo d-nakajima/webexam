@@ -19,7 +19,7 @@ export default function ColoredScore(props: Props) {
   }
   return (
     <div className={`${scoreColor} ${props.className}`}>
-      {props.score.toFixed(1)}
+      {props.score.toPrecision(2).substring(0, 3)}
     </div>
   );
 }

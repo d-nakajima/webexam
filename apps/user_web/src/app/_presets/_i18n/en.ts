@@ -7,18 +7,17 @@ const message: LocaleMessageType = {
     },
   },
   metadata: {
-    title: "Sample",
-    description: "Sample",
+    title: "WebExam",
+    description: "Check and deepen your understanding of web articles.",
     ogp: {
-      title: "Sample",
-      description: "Sample",
-      image: "https://example.com/sample.jpg",
+      title: "WebExam",
+      description: "Check and deepen your understanding of web articles.",
     },
   },
   pwa: {
-    name: "Sample",
-    shortName: "Sample",
-    description: "Sample",
+    name: "WebExam",
+    shortName: "WebExam",
+    description: "Check and deepen your understanding of web articles.",
   },
   auth: {
     already_have_account: "already have account.",

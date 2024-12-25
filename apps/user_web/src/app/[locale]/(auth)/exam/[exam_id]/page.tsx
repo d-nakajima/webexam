@@ -7,9 +7,12 @@ import ExamQuestionList from "./_components/ExamQuestionList";
 import ExamQuestionListItem from "./_components/ExamQuestionList/ExamQuestionListItem";
 import { notFound } from "next/navigation";
 import ExamAnswerSubmit from "./_components/ExamAnswerSubmit";
-import { getServerAuthUser } from "@/_lib/firebase/FirebaseAdminAuth";
 import PageLayout from "../../_components/PageLayout";
 import ExamShareDialogContent from "./_components/ExamShareDialogContent";
+import { routing } from "@/_lib/i18n/routing";
+import { Metadata } from "next";
+import { getVercelOrigin } from "@/app/_presets/_utils/url";
+import { examRoutePath } from "@/app/_presets/_utils/route_builder";
 
 type Props = {
   params: { locale: string; exam_id: string };
@@ -17,10 +20,37 @@ type Props = {
 
 export const revalidate = 600;
 
-export default async function ExamPage(props: Props) {
-  const auth = await getServerAuthUser();
-  if (!auth) return notFound();
+export const generateMetadata = async (
+  props: Props
+): Promise<Metadata | undefined> => {
+  const exam = await getExam(props.params.exam_id);
+  if (!exam) return undefined;
 
+  const locale = props.params.locale;
+  const locales = routing.locales;
+  const defaultLocale = routing.defaultLocale;
+  const path = examRoutePath(exam.id);
+
+  return {
+    title: exam?.shortTitle,
+    alternates: {
+      canonical: `${getVercelOrigin()}/${defaultLocale}/${path}`,
+      languages: {
+        ...Object.fromEntries(
+          locales
+            .filter((_locale) => _locale !== locale)
+            .map((_locale) => [
+              _locale,
+              `${getVercelOrigin()}/${_locale}/${path}`,
+            ])
+        ),
+        "x-default": `${getVercelOrigin()}/${defaultLocale}/${path}`,
+      },
+    },
+  };
+};
+
+export default async function ExamPage(props: Props) {
   const exam = await getExam(props.params.exam_id);
   if (!exam) return notFound();
 

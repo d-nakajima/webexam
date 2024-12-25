@@ -7,18 +7,18 @@ const message: LocaleMessageType = {
     },
   },
   metadata: {
-    title: "Sample",
-    description: "Sample",
+    title: "WebExam",
+    description:
+      "Web上の情報から自動でテストを作成し、情報に対する理解を確認し、深めるためのツールです。",
     ogp: {
-      title: "Sample",
-      description: "Sample",
-      image: "https://example.com/sample.jpg",
+      title: "WebExam",
+      description: "Webの記事に対する理解を確認し、深めるためのツールです。",
     },
   },
   pwa: {
-    name: "Sample",
-    shortName: "Sample",
-    description: "Sample",
+    name: "WebExam",
+    shortName: "WebExam",
+    description: "Webの記事に対する理解を確認し、深めるためのツールです。",
   },
   auth: {
     already_have_account: "すでにアカウントが存在しています。",
