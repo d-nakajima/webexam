@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { NextResponse, NextRequest } from "next/server";
 
 const PWA_SCOPE = "/user_web/";
-const PWA_START_PATH = "home/";
+const PWA_START_PATH = "/";
 
 export async function GET(request: NextRequest) {
   const origin = request.nextUrl.origin;
@@ -18,13 +18,13 @@ export async function GET(request: NextRequest) {
       {
         purpose: "maskable",
         sizes: "512x512",
-        src: `${origin}/icon512_maskable.png`,
+        src: `${origin}/pwa_icon_maskable.png`,
         type: "image/png",
       },
       {
         purpose: "any",
         sizes: "512x512",
-        src: `${origin}/icon512_rounded.png`,
+        src: `${origin}/pwa_icon_rounded.png`,
         type: "image/png",
       },
     ],

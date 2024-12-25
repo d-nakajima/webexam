@@ -15,7 +15,10 @@ type Props = {
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const t = await getTranslations("metadata");
   return {
-    title: t("title"),
+    title: {
+      template: `%s | ${t("title")}`,
+      default: t("title"),
+    },
     description: t("description"),
     openGraph: {
       title: t("ogp.title"),

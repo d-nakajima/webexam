@@ -11,7 +11,6 @@ export type LocaleMessageType = {
     ogp: {
       title: string;
       description: string;
-      image: string;
     };
   };
   pwa: {

@@ -24,7 +24,7 @@ export default function RefreshOnGraded(props: Props) {
       isFirstLoaded.current = true;
     });
     return unsubscribe;
-  }, [answerId, refresh, revalidateAnswerCache]);
+  }, [answerId, refresh]);
 
   return props.children;
 }
