@@ -13,6 +13,7 @@ import { routing } from "@/_lib/i18n/routing";
 import { Metadata } from "next";
 import { getVercelOrigin } from "@/app/_presets/_utils/url";
 import { examRoutePath } from "@/app/_presets/_utils/route_builder";
+import { setRequestLocale } from "next-intl/server";
 
 type Props = {
   params: { locale: string; exam_id: string };
@@ -51,6 +52,7 @@ export const generateMetadata = async (
 };
 
 export default async function ExamPage(props: Props) {
+  setRequestLocale(props.params.locale);
   const exam = await getExam(props.params.exam_id);
   if (!exam) return notFound();
 

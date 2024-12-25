@@ -1,5 +1,6 @@
 import { unstable_cache } from "next/cache";
 import {
+  getAnswer,
   listUserAnswers,
   listUserExamAnswerHistory,
 } from "../_repositories/adminFirestore";
@@ -26,5 +27,11 @@ export function cacheListUserAnswers(authUserId: string) {
   const tags = [userAnswersCacheTag(authUserId)];
   return unstable_cache((userId: string) => listUserAnswers(userId), [], {
     tags,
+  });
+}
+
+export function cacheGetAnswer(answerId: string) {
+  return unstable_cache((examId: string) => getAnswer(examId), [], {
+    tags: [answerCacheTag(answerId)],
   });
 }
