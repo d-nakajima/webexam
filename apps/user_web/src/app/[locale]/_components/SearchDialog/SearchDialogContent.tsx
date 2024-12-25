@@ -54,11 +54,6 @@ export default function SearchDialogContent(props: Props) {
         </div>
         <Separator />
         <div className="p-3 h-64 overflow-scroll">
-          {/* {text.length === 0 && (
-            <div className="h-full flex items-center justify-center text-sm opacity-75 pb-6">
-              キーワードを入力してください
-            </div>
-          )} */}
           {result.length === 0 && (
             <div className="h-full flex items-center justify-center text-sm opacity-75 pb-6">
               該当する結果が見つかりませんでした
