@@ -27,11 +27,13 @@ type Props = {
 };
 
 export default async function AnswerPage(props: Props) {
+  setRequestLocale(props.params.locale);
   const auth = await getServerAuthUser();
   if (!auth) return notFound();
-  setRequestLocale(props.params.locale);
 
-  const answer = await cacheGetAnswer(props.params.answer_id)(auth.uid);
+  const answer = await cacheGetAnswer(props.params.answer_id)(
+    props.params.answer_id
+  );
   if (!answer) return notFound();
   if (answer.userId !== auth.uid && !answer.isPublish) return notFound();
 

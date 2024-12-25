@@ -31,7 +31,7 @@ export function cacheListUserAnswers(authUserId: string) {
 }
 
 export function cacheGetAnswer(answerId: string) {
-  return unstable_cache((examId: string) => getAnswer(examId), [], {
+  return unstable_cache((answerId: string) => getAnswer(answerId), [], {
     tags: [answerCacheTag(answerId)],
   });
 }
