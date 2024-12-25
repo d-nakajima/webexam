@@ -37,7 +37,7 @@ export default function PageHeader(props: Props) {
           </h2>
         )}
       </div>
-      <div className="flex items-center p-2 gap-1">
+      <div className="flex items-center p-2 gap-1 flex-shrink-0">
         {props.sharedDialogContent && (
           <Dialog>
             <DialogTrigger asChild>

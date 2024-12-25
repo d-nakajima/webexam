@@ -123,20 +123,23 @@ const AuthProvider: React.FC<Props> = ({ children, loginComponent: _ }) => {
         await linkWithPopup(auth.currentUser, provider)
           .then((_) => {
             console.log("Anonymous account successfully upgraded");
+            if (options?.reload) window.location.reload();
           })
           .catch(async (error) => {
             console.log("Error upgrading anonymous account", error);
-            const isConfirmed = window.confirm(
-              "This email is already in use.\nDo you want to sign in with this account?\nYour card created as guest will be lost."
-            );
-            if (!isConfirmed) return;
-            await signInWithPopup(auth, provider);
+            setTimeout(async () => {
+              const isConfirmed = window.confirm(
+                "This email is already in use.\nDo you want to sign in with this account?\nYour answers created as guest will be lost."
+              );
+              if (!isConfirmed) return;
+              await signInWithPopup(auth, provider);
+              if (options?.reload) window.location.reload();
+            }, 200);
           });
       } else if (provider === "github") {
         await signInWithPopup(auth, new GithubAuthProvider());
+        if (options?.reload) window.location.reload();
       }
-
-      if (options?.reload) window.location.reload();
     } catch (error) {
       console.error("Login error:", error);
     }
