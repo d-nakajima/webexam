@@ -1,16 +1,18 @@
-import { unstable_cache } from "next/cache";
+"use server";
+import { revalidateTag, unstable_cache } from "next/cache";
 import {
   getAnswer,
   listUserAnswers,
   listUserExamAnswerHistory,
 } from "../_repositories/adminFirestore";
+import {
+  userExamAnswerHistoryCacheTag,
+  userAnswersCacheTag,
+  answerCacheTag,
+} from "./cache_tag";
+import { getServerAuthUser } from "@/_lib/firebase/FirebaseAdminAuth";
 
-export const userExamAnswerHistoryCacheTag = (userId: string, examId: string) =>
-  `answer_history_${userId}_${examId}`;
-export const answerCacheTag = (answerId: string) => `answer_${answerId}`;
-export const userAnswersCacheTag = (userId: string) => `answers_${userId}`;
-
-export function cacheListUserExamAnswerHistory(
+export async function cacheListUserExamAnswerHistory(
   authUserId: string,
   examId: string
 ) {
@@ -23,14 +25,25 @@ export function cacheListUserExamAnswerHistory(
   );
 }
 
-export function cacheListUserAnswers(authUserId: string) {
-  const tags = [userAnswersCacheTag(authUserId)];
-  return unstable_cache((userId: string) => listUserAnswers(userId), [], {
-    tags,
-  });
+export async function cacheListOwnAnswers() {
+  const authUser = await getServerAuthUser();
+  if (!authUser) throw new Error("authUser is not found");
+  const tags = [userAnswersCacheTag(authUser.uid)];
+  return unstable_cache(
+    async (userId: string) => {
+      return {
+        cacheAt: new Date(),
+        data: await listUserAnswers(userId),
+      };
+    },
+    [],
+    {
+      tags,
+    }
+  )(authUser.uid);
 }
 
-export function cacheGetAnswer(answerId: string) {
+export async function cacheGetAnswer(answerId: string) {
   return unstable_cache((answerId: string) => getAnswer(answerId), [], {
     tags: [answerCacheTag(answerId)],
   });

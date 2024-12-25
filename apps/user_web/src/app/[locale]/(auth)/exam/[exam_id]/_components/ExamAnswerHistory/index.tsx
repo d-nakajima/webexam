@@ -20,7 +20,7 @@ export default async function ExamAnswerHistory(props: Props) {
   const auth = await getServerAuthUser();
   if (!auth) return notFound();
 
-  const cache = cacheListUserExamAnswerHistory(auth.uid, props.examId);
+  const cache = await cacheListUserExamAnswerHistory(auth.uid, props.examId);
   const userExamAnswerHistory = await cache(auth.uid, props.examId);
 
   return (

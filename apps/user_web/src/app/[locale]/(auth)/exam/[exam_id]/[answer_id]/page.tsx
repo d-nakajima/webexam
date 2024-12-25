@@ -11,16 +11,16 @@ import { Card, CardContent } from "@/_lib/shadcn/components/ui/card";
 import RefreshOnGraded from "./_components/RefreshOnGraded";
 import {
   answerCacheTag,
-  cacheGetAnswer,
   userAnswersCacheTag,
   userExamAnswerHistoryCacheTag,
-} from "@/app/_presets/_utils/cache";
+} from "@/app/_presets/_utils/cache_tag";
 import PageLayout from "../../../_components/PageLayout";
 import ShareAnswerDialogContent from "./_components/ShareAnswerDialogContent";
 import { examRoutePath } from "@/app/_presets/_utils/route_builder";
 import { Link } from "@/_lib/i18n/routing";
 import { Button } from "@/app/_shadcn/components/ui/button";
 import { setRequestLocale } from "next-intl/server";
+import { cacheGetAnswer } from "@/app/_presets/_utils/cache";
 
 type Props = {
   params: { locale: string; exam_id: string; answer_id: string };
@@ -31,9 +31,9 @@ export default async function AnswerPage(props: Props) {
   const auth = await getServerAuthUser();
   if (!auth) return notFound();
 
-  const answer = await cacheGetAnswer(props.params.answer_id)(
-    props.params.answer_id
-  );
+  const answer = await (
+    await cacheGetAnswer(props.params.answer_id)
+  )(props.params.answer_id);
   if (!answer) return notFound();
   if (answer.userId !== auth.uid && !answer.isPublish) return notFound();
 
