@@ -8,18 +8,18 @@ import ExamQuestionList from "../_components/ExamQuestionList";
 import ExamQuestionListItem from "../_components/ExamQuestionList/ExamQuestionListItem";
 import { getServerAuthUser } from "@/_lib/firebase/FirebaseAdminAuth";
 import { revalidateTag, unstable_cache } from "next/cache";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@/_lib/shadcn/components/ui/card";
+import { Card, CardContent } from "@/_lib/shadcn/components/ui/card";
 import RefreshOnGraded from "./_components/RefreshOnGraded";
 import {
   answerCacheTag,
+  userAnswersCacheTag,
   userExamAnswerHistoryCacheTag,
 } from "@/app/_presets/_utils/cache";
 import PageLayout from "../../../_components/PageLayout";
 import ShareAnswerDialogContent from "./_components/ShareAnswerDialogContent";
+import { examRoutePath } from "@/app/_presets/_utils/route_builder";
+import { Link } from "@/_lib/i18n/routing";
+import { Button } from "@/app/_shadcn/components/ui/button";
 
 type Props = {
   params: { locale: string; exam_id: string; answer_id: string };
@@ -46,6 +46,7 @@ export default async function AnswerPage(props: Props) {
     revalidateTag(
       userExamAnswerHistoryCacheTag(auth.uid, props.params.exam_id)
     );
+    revalidateTag(userAnswersCacheTag(auth.uid));
   }
 
   const answer = await cacheGetAnswer(props.params.answer_id);
@@ -86,7 +87,17 @@ export default async function AnswerPage(props: Props) {
               })}
             </ExamIndex>
           }
-          right={<ExamAnswerHistory examId={props.params.exam_id} />}
+          right={
+            <div className="flex flex-col gap-4">
+              <ExamAnswerHistory examId={props.params.exam_id} />
+              <Link
+                href={examRoutePath(props.params.exam_id)}
+                className="w-full"
+              >
+                <Button className="w-full text-xs">もう一度回答する</Button>
+              </Link>
+            </div>
+          }
         >
           <div className="flex flex-col h-full">
             <Card className="mb-6 text-sm">
@@ -121,8 +132,7 @@ export default async function AnswerPage(props: Props) {
                       title={question.title}
                       description={question.description}
                       options={
-                        question.options?.map((option, index) => option.text) ||
-                        []
+                        question.options?.map((option) => option.text) || []
                       }
                       gradeRate={answer.grades[index]?.rate}
                       {...props}

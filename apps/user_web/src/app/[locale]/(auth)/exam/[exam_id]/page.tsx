@@ -1,7 +1,4 @@
-import {
-  getExam,
-  listUserExamAnswerHistory,
-} from "@/app/_presets/_repositories/adminFirestore";
+import { getExam } from "@/app/_presets/_repositories/adminFirestore";
 import ExamAnswerHistory from "./_components/ExamAnswerHistory";
 import ExamIndex from "./_components/ExamIndex";
 import ExamIndexItem from "./_components/ExamIndex/ExamIndexItem";
@@ -11,8 +8,6 @@ import ExamQuestionListItem from "./_components/ExamQuestionList/ExamQuestionLis
 import { notFound } from "next/navigation";
 import ExamAnswerSubmit from "./_components/ExamAnswerSubmit";
 import { getServerAuthUser } from "@/_lib/firebase/FirebaseAdminAuth";
-import { unstable_cache } from "next/cache";
-import { userExamAnswerHistoryCacheTag } from "@/app/_presets/_utils/cache";
 import PageLayout from "../../_components/PageLayout";
 import ExamShareDialogContent from "./_components/ExamShareDialogContent";
 
@@ -27,20 +22,6 @@ export default async function ExamPage(props: Props) {
   if (!auth) return notFound();
 
   const exam = await getExam(props.params.exam_id);
-  const cacheListUserExamAnswerHistory = unstable_cache(
-    (userId: string, examId: string) =>
-      listUserExamAnswerHistory(userId, examId),
-    [],
-    {
-      tags: [userExamAnswerHistoryCacheTag(auth.uid, props.params.exam_id)],
-    }
-  );
-
-  const userExamAnswerHistory = await cacheListUserExamAnswerHistory(
-    auth.uid,
-    props.params.exam_id
-  );
-
   if (!exam) return notFound();
 
   return (
