@@ -46,7 +46,7 @@ export default async function Home(props: Props) {
       />
       <main className="px-16 py-8 h-full flex justify-center items-center max-sm:px-5">
         <PageLayout
-          title="理解度テスト"
+          title="WebExam"
           sharedDialogContent={<HomeShareDialogContent />}
         >
           <HomeScreen />

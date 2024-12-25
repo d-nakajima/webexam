@@ -6,7 +6,7 @@ type Props = {
   id: string;
 };
 
-export default function ExamShareDialogContent(props: Props) {
+export default async function ExamShareDialogContent(props: Props) {
   return (
     <>
       <DialogTitle>問題をシェア</DialogTitle>

@@ -1,3 +1,5 @@
+"use client";
+
 import ExamAnswerHistoryItem from "./ExamAnswerHistoryItem";
 import {
   Select,
@@ -5,23 +7,20 @@ import {
   SelectTrigger,
 } from "@/app/_shadcn/components/ui/select";
 import { HistoryIcon } from "lucide-react";
-import { getServerAuthUser } from "@/_lib/firebase/FirebaseAdminAuth";
-import { notFound } from "next/navigation";
 import { answerRoutePath } from "@/app/_presets/_utils/route_builder";
 import { Link } from "@/_lib/i18n/routing";
 import { Button } from "@/app/_shadcn/components/ui/button";
-import { cacheListUserExamAnswerHistory } from "@/app/_presets/_utils/cache";
+import { useUserAnswers } from "@/app/[locale]/(auth)/_providers/UserAnswersProvider";
 
 type Props = {
   examId: string;
 };
 
-export default async function ExamAnswerHistory(props: Props) {
-  const auth = await getServerAuthUser();
-  if (!auth) return notFound();
-
-  const cache = await cacheListUserExamAnswerHistory(auth.uid, props.examId);
-  const userExamAnswerHistory = await cache(auth.uid, props.examId);
+export default function ExamAnswerHistory(props: Props) {
+  const { answers } = useUserAnswers();
+  const examAnswers = answers.filter(
+    (answer) => answer.examId === props.examId
+  );
 
   return (
     <Select>
@@ -31,15 +30,15 @@ export default async function ExamAnswerHistory(props: Props) {
       </SelectTrigger>
       <SelectContent className="px-0 py-1">
         <div className="px-2 py-1">
-          {userExamAnswerHistory.map((history) => (
+          {examAnswers.map((answer) => (
             <Link
-              href={answerRoutePath(props.examId, history.id)}
-              key={history.id}
+              href={answerRoutePath(props.examId, answer.id)}
+              key={answer.id}
             >
               <Button variant="ghost" asChild>
                 <ExamAnswerHistoryItem
-                  date={history.createdAt}
-                  score={history.score}
+                  date={answer.createdAt}
+                  score={answer.score}
                 />
               </Button>
             </Link>

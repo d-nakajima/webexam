@@ -5,7 +5,6 @@ import ExamIndexItem from "./_components/ExamIndex/ExamIndexItem";
 import ExamLayout from "./_components/ExamLayout";
 import ExamQuestionList from "./_components/ExamQuestionList";
 import ExamQuestionListItem from "./_components/ExamQuestionList/ExamQuestionListItem";
-import { notFound } from "next/navigation";
 import ExamAnswerSubmit from "./_components/ExamAnswerSubmit";
 import PageLayout from "../../_components/PageLayout";
 import ExamShareDialogContent from "./_components/ExamShareDialogContent";
@@ -14,12 +13,16 @@ import { Metadata } from "next";
 import { getVercelOrigin } from "@/app/_presets/_utils/url";
 import { examRoutePath } from "@/app/_presets/_utils/route_builder";
 import { setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: { locale: string; exam_id: string };
 };
 
-export const revalidate = 600;
+export const dynamicParams = true;
+export async function generateStaticParams() {
+  return [];
+}
 
 export const generateMetadata = async (
   props: Props
@@ -54,7 +57,7 @@ export const generateMetadata = async (
 export default async function ExamPage(props: Props) {
   setRequestLocale(props.params.locale);
   const exam = await getExam(props.params.exam_id);
-  if (!exam) return notFound();
+  if (!exam) notFound();
 
   return (
     <PageLayout

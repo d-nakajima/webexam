@@ -1,5 +1,3 @@
-"use client";
-
 type Props = {
   left: React.ReactNode;
   right: React.ReactNode;
