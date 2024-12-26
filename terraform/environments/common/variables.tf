@@ -13,3 +13,8 @@ variable "github_repo" {
 variable "root_directory" {
   type = string
 }
+
+variable "vercel_production_domain_name" {
+  type = string
+  nullable = true
+}

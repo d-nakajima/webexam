@@ -23,4 +23,5 @@ module "vercel" {
   vercel_app_name = var.vercel_app_name
   github_repo = var.github_repo
   root_directory = var.root_directory
+  production_domain_name = var.vercel_production_domain_name
 }

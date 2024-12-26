@@ -17,3 +17,8 @@ variable "root_directory" {
   type = string
   description = "Root Directory"
 }
+
+variable "production_domain_name" {
+  type = string
+  nullable = true
+}

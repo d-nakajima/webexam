@@ -13,6 +13,7 @@ resource "vercel_project" "with_git" {
   framework = "nextjs"
   root_directory = var.root_directory
   automatically_expose_system_environment_variables = true
+
   ignore_command = <<EOT
 #!/bin/bash
 # "root_directory" 以下に差分が無ければビルドをスキップ
@@ -29,4 +30,9 @@ EOT
     type = "github"
     repo = var.github_repo
   }
+}
+
+resource "vercel_project_domain" "production" {
+  project_id = vercel_project.with_git.id
+  domain     = var.production_domain_name != null ? var.production_domain_name : "${var.vercel_app_name}.vercel.app"
 }
