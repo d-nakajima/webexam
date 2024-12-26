@@ -41,3 +41,11 @@ bash ../_scripts/output_local_env.sh # web appの.envに追加する
 4. firebaseの設定
 
 `.firebaserc`に任意の設定を登録
+
+
+## よく使うコード
+```bash
+# firestoreのindex設定をリモートからローカルにコピー
+firebase firestore:indexes > firestore.indexes.json
+
+```

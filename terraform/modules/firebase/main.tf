@@ -131,9 +131,7 @@ resource "google_identity_platform_config" "default" {
     }
   }
 
-  authorized_domains = [
-    "localhost",
-  ]
+  authorized_domains = concat([ "localhost" ], var.authentication_domains)
 
   depends_on = [
     google_project_service.default,

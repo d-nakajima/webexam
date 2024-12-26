@@ -57,6 +57,11 @@ export function listenExam(
 }
 
 export function submitAnswer(answer: AnswerType) {
+  console.log(
+    ClientCreateDocParser(AnswerSchema, {
+      ...answer,
+    })
+  );
   return addDoc(
     _collection(answerCollectionPath()),
     ClientCreateDocParser(AnswerSchema, {

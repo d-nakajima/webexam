@@ -3,5 +3,11 @@
     "default": "webexam-dev",
     "dev": "webexam-dev",
     "prod": "webexam-prod"
+  },
+  "targets": {},
+  "etags": {
+    "webexam-prod": {
+      "extensionInstances": {}
+    }
   }
 }

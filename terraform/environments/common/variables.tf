@@ -18,3 +18,8 @@ variable "vercel_production_domain_name" {
   type = string
   nullable = true
 }
+
+variable "vercel_development_domain_name" {
+  type = string
+  nullable = true
+}

@@ -19,3 +19,8 @@ variable "enable_anonymous_signin" {
   type    = bool
   default = false
 }
+
+variable "authentication_domains" {
+  type    = list(string)
+  default = []
+}
