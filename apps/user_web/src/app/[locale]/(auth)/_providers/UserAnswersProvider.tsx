@@ -2,6 +2,7 @@
 import { useAuth } from "@/_lib/firebase/FirebaseAuthProvider";
 import { ReadDoc } from "@/_lib/firebase/ReadDoc";
 import { listenUserAnswers } from "@/app/_presets/_repositories/clientFirestore";
+import { uniqueBy } from "@/app/_presets/_utils/array";
 import { cacheListOwnAnswers } from "@/app/_presets/_utils/cache";
 import { AnswerType } from "@/app/_shared";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
@@ -40,7 +41,7 @@ export default function UserAnswersProvider(props: Props) {
     return listenUserAnswers(
       authUser.uid,
       (updates) => {
-        setAnswers([...updates, ...initialAnswers.current]);
+        setAnswers(uniqueBy([...updates, ...initialAnswers.current], "id"));
       },
       { lastUpdatedAt: cacheAt }
     );

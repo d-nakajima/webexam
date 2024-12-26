@@ -6,11 +6,7 @@ import {
   publishAnswer,
   unpublishAnswer,
 } from "@/app/_presets/_repositories/clientFirestore";
-import {
-  cacheGetAnswer,
-  cacheGetOwnAnswer,
-  revalidateAnswerCache,
-} from "@/app/_presets/_utils/cache";
+import { revalidateAnswerCache } from "@/app/_presets/_utils/cache";
 import {
   answerRoutePath,
   examRoutePath,

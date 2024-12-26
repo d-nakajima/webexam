@@ -3,7 +3,6 @@ import PageLayout from "../../_components/PageLayout";
 import { getExam } from "@/app/_presets/_repositories/adminFirestore";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import ExamShareDialogContent from "./_components/ExamShareDialogContent";
 
 type Props = {
   children: ReactNode;

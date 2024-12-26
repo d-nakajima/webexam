@@ -5,7 +5,6 @@ import { getVercelOrigin } from "../../_presets/_utils/url";
 import JsonLinkedData from "../../_presets/_components/JsonLinkedData";
 import HomeScreen from "./_components/HomeScreen";
 import PageLayout from "./_components/PageLayout";
-import HomeShareDialogContent from "../_components/HomeShareDialogContent";
 
 type Props = {
   params: { locale: string };

@@ -10,7 +10,7 @@ import {
 import { Input } from "@/app/_shadcn/components/ui/input";
 import { Separator } from "@/app/_shadcn/components/ui/separator";
 import { AnswerType } from "@/app/_shared";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchResultItem from "./SearchResultItem";
 import { useUserAnswers } from "../../(auth)/_providers/UserAnswersProvider";
 
@@ -38,6 +38,18 @@ export default function SearchDialog(props: Props) {
     setResult(_result);
   };
 
+  useEffect(() => {
+    const _result = answers.filter((answer) => {
+      return [
+        answer.examData.title,
+        answer.examData.abstract,
+        ...answer.examData.questions.map((question) => question.title),
+      ].some((str) => str.includes(text));
+    });
+
+    setResult(_result);
+  }, [answers, text]);
+
   return (
     <Dialog>
       <DialogTrigger asChild>{props.children}</DialogTrigger>
@@ -45,10 +57,7 @@ export default function SearchDialog(props: Props) {
         <div className="p-2">
           <Input
             value={text}
-            onChange={(e) => {
-              setText(e.target.value);
-              textSearchFunc(e.target.value);
-            }}
+            onChange={(e) => setText(e.target.value)}
             placeholder="キーワードで検索..."
             className="ring-0 focus-visible:ring-transparent outline-none border-none"
           />

@@ -1,9 +1,11 @@
 "use client";
 
 import { ReadDoc } from "@/_lib/firebase/ReadDoc";
-import { revalidateAnswerCache } from "@/app/_presets/_utils/cache";
+import {
+  revalidateAnswerCache,
+  revalidateUserAnswersCache,
+} from "@/app/_presets/_utils/cache";
 import { AnswerType } from "@/app/_shared";
-import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
 import PageContent from ".";
 import { useAuth } from "@/_lib/firebase/FirebaseAuthProvider";
@@ -16,7 +18,7 @@ type Props = {
 
 export default function ClientPageContent(props: Props) {
   const { authUser } = useAuth();
-  if (!authUser) return notFound();
+  if (!authUser) throw new Error("user is not authenticated");
 
   const [answer, setAnswer] = useState<ReadDoc<AnswerType>>();
 
@@ -25,6 +27,8 @@ export default function ClientPageContent(props: Props) {
       if (!data) return;
       if (answer && answer.status !== "graded" && data.status === "graded") {
         revalidateAnswerCache(props.answerId, data.examId);
+        revalidateUserAnswersCache();
+        console.log("revalidateUserAnswersCache");
       }
 
       setAnswer(data);

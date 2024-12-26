@@ -9,6 +9,7 @@ import { answerRoutePath } from "./route_builder";
 export async function cacheListOwnAnswers() {
   const authUser = await getServerAuthUser();
   if (!authUser) throw new Error("authUser is not found");
+
   const tags = [userAnswersCacheTag(authUser.uid)];
   return unstable_cache(
     async (userId: string) => {
@@ -35,6 +36,12 @@ export async function revalidateAnswerCache(answerId: string, examId: string) {
   revalidatePath(answerRoutePath(examId, answerId));
 }
 
+export async function revalidateUserAnswersCache() {
+  const authUser = await getServerAuthUser();
+  if (!authUser) throw new Error("authUser is not found");
+  revalidateTag(userAnswersCacheTag(authUser.uid));
+}
+
 export async function cacheGetOwnAnswer(answerId: string, userId: string) {
   const authUser = await getServerAuthUser();
   if (!authUser) throw new Error("authUser is not found");
@@ -48,7 +55,7 @@ export async function cacheGetOwnAnswer(answerId: string, userId: string) {
       }),
     [],
     {
-      tags: [answerCacheTag(answerId), userAnswersCacheTag(authUser.uid)],
+      tags: [answerCacheTag(answerId)],
     }
   )(answerId, userId);
 }
