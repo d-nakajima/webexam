@@ -26,18 +26,6 @@ export default function SearchDialog(props: Props) {
   const [text, setText] = useState("");
   const [result, setResult] = useState<ReadDoc<AnswerType>[]>(answers);
 
-  const textSearchFunc = (text: string) => {
-    const _result = answers.filter((answer) => {
-      return [
-        answer.examData.title,
-        answer.examData.abstract,
-        ...answer.examData.questions.map((question) => question.title),
-      ].some((str) => str.includes(text));
-    });
-
-    setResult(_result);
-  };
-
   useEffect(() => {
     const _result = answers.filter((answer) => {
       return [

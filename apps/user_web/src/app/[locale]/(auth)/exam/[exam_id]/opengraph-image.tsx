@@ -2,6 +2,7 @@ import { getVercelProjectProductionOrigin } from "@/app/_presets/_utils/url";
 import { ImageResponse } from "next/og";
 import { ExamDataResponseType } from "./opengraph_data/type";
 import { typedFetch } from "@/app/_presets/_utils/fetch";
+import { examRoutePath } from "@/app/_presets/_utils/route_builder";
 
 export const runtime = "edge";
 export const size = {
@@ -17,7 +18,7 @@ type Props = {
 export default async function Image(props: Props) {
   const examDataUrl = `${getVercelProjectProductionOrigin()}/${
     props.params.locale
-  }/exam/${props.params.exam_id}/opengraph_data`;
+  }${examRoutePath(props.params.exam_id)}opengraph_data`;
 
   const exam = await typedFetch<ExamDataResponseType>(examDataUrl);
   const bgImageUrl = `${getVercelProjectProductionOrigin()}/ogp/share_bg.png`;

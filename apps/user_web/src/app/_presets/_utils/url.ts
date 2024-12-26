@@ -25,5 +25,9 @@ export function getVercelProjectProductionOrigin() {
   const domain =
     process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ||
     process.env.VERCEL_PROJECT_PRODUCTION_URL;
-  return `https://${domain}`;
+  if (domain.includes("localhost") || domain.includes("127.0.0.1")) {
+    return `http://${domain}`;
+  } else {
+    return `https://${domain}`;
+  }
 }

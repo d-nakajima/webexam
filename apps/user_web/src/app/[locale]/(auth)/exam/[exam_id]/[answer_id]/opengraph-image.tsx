@@ -18,10 +18,10 @@ type Props = {
 export default async function Image(props: Props) {
   const answerDataUrl = `${getVercelProjectProductionOrigin()}/${
     props.params.locale
-  }/${answerRoutePath(
+  }${answerRoutePath(
     props.params.exam_id,
     props.params.answer_id
-  )}/opengraph_data`;
+  )}opengraph_data`;
 
   const answer = await typedFetch<AnswerDataResponseType>(answerDataUrl);
   const exam = answer.examData;
@@ -69,14 +69,20 @@ export default async function Image(props: Props) {
             wordBreak: "keep-all",
           }}
         >
-          <div>{exam.shortTitle}</div>
+          <div
+            style={{
+              wordBreak: "keep-all",
+            }}
+          >
+            {exam.title}
+          </div>
           <div
             style={{
               fontSize: "100px",
               color: color,
             }}
           >
-            {answer.score?.toPrecision(2).substring(0, 3)}
+            {answer.score?.toPrecision(2).substring(0, 3) || "?????"}
           </div>
         </div>
       </div>

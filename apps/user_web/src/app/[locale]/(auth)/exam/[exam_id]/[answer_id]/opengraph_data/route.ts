@@ -13,7 +13,6 @@ type Props = {
 export async function GET(_request: Request, props: Props) {
   const answer = await getAnswer(props.params.answer_id);
   if (!answer) return NextResponse.error();
-  if (!answer.isPublish) return NextResponse.error();
   const exam = answer.examData;
 
   return NextResponse.json<AnswerDataResponseType>({
@@ -21,6 +20,6 @@ export async function GET(_request: Request, props: Props) {
       title: exam.title,
       shortTitle: exam.shortTitle,
     },
-    score: answer.score,
+    score: answer.isPublish ? answer.score : undefined,
   });
 }
