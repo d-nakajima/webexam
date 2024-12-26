@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { cacheGetAnswer } from "@/app/_presets/_utils/cache";
-import PageContent from "../_components/PageContent";
-import ClientPageContent from "../_components/PageContent/ClientPageContent";
+import AnswerPageContent from "../_components/AnswerPageContent";
+import PrivateAnswerPageContent from "../_components/AnswerPageContent/PrivateAnswerPageContent";
 
 type Props = {
   params: { locale: string; exam_id: string; answer_id: string };
@@ -19,8 +19,12 @@ export default async function AnswerPage(props: Props) {
   if (!answer) return notFound();
 
   return answer.isPublish ? (
-    <PageContent answer={answer} />
+    <AnswerPageContent answer={answer} />
   ) : (
-    <ClientPageContent answerId={answer.id} />
+    <PrivateAnswerPageContent
+      answerId={answer.id}
+      ownerUserId={answer.userId}
+      examId={answer.examId}
+    />
   );
 }
