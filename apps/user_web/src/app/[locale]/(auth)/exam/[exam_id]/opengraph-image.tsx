@@ -1,9 +1,9 @@
-// import { getExam } from "@/app/_presets/_repositories/adminFirestore";
-import { getVercelOrigin } from "@/app/_presets/_utils/url";
+import { getVercelProjectProductionOrigin } from "@/app/_presets/_utils/url";
 import { ImageResponse } from "next/og";
 import { ExamDataResponseType } from "./opengraph_data/type";
 import { typedFetch } from "@/app/_presets/_utils/fetch";
 
+export const runtime = "edge";
 export const size = {
   width: 1200,
   height: 630,
@@ -15,14 +15,12 @@ type Props = {
   params: { locale: string; exam_id: string };
 };
 export default async function Image(props: Props) {
-  const examDataUrl = `${getVercelOrigin()}/${props.params.locale}/exam/${
-    props.params.exam_id
-  }/opengraph_data`;
+  const examDataUrl = `${getVercelProjectProductionOrigin()}/${
+    props.params.locale
+  }/exam/${props.params.exam_id}/opengraph_data`;
 
-  console.info(process.env.VERCEL_URL);
-  console.info(process.env.VERCEL_PROJECT_PRODUCTION_URL);
   const exam = await typedFetch<ExamDataResponseType>(examDataUrl);
-  const bgImageUrl = `${getVercelOrigin()}/ogp/share_bg.png`;
+  const bgImageUrl = `${getVercelProjectProductionOrigin()}/ogp/share_bg.png`;
 
   return new ImageResponse(
     (

@@ -20,3 +20,10 @@ export function isUrl(url: string) {
     return false;
   }
 }
+
+export function getVercelProjectProductionOrigin() {
+  const domain =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ||
+    process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  return `https://${domain}`;
+}

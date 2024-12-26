@@ -9,6 +9,10 @@ const nextConfig = {
   images: {
     domains: ["lh3.googleusercontent.com"],
   },
+  env: {
+    NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL:
+      process.env.VERCEL_PROJECT_PRODUCTION_URL,
+  },
 };
 
 const withPWA = nextPWA({

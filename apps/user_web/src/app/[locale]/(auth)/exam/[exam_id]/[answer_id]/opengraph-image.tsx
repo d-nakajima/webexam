@@ -1,9 +1,10 @@
-import { getVercelOrigin } from "@/app/_presets/_utils/url";
+import { getVercelProjectProductionOrigin } from "@/app/_presets/_utils/url";
 import { ImageResponse } from "next/og";
 import { AnswerDataResponseType } from "./opengraph_data/type";
 import { typedFetch } from "@/app/_presets/_utils/fetch";
 import { answerRoutePath } from "@/app/_presets/_utils/route_builder";
 
+export const runtime = "edge";
 export const size = {
   width: 1200,
   height: 630,
@@ -15,7 +16,7 @@ type Props = {
   params: { locale: string; exam_id: string; answer_id: string };
 };
 export default async function Image(props: Props) {
-  const answerDataUrl = `${getVercelOrigin()}/${
+  const answerDataUrl = `${getVercelProjectProductionOrigin()}/${
     props.params.locale
   }/${answerRoutePath(
     props.params.exam_id,
@@ -24,7 +25,7 @@ export default async function Image(props: Props) {
 
   const answer = await typedFetch<AnswerDataResponseType>(answerDataUrl);
   const exam = answer.examData;
-  const bgImageUrl = `${getVercelOrigin()}/ogp/share_bg.png`;
+  const bgImageUrl = `${getVercelProjectProductionOrigin()}/ogp/share_bg.png`;
   let color: string;
   if (answer.score === undefined) {
     color = "gray";
