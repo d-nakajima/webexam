@@ -1,30 +1,10 @@
 "use server";
+
 import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
-import {
-  getAnswer,
-  listUserAnswers,
-  listUserExamAnswerHistory,
-} from "../_repositories/adminFirestore";
-import {
-  userExamAnswerHistoryCacheTag,
-  userAnswersCacheTag,
-  answerCacheTag,
-} from "./cache_tag";
+import { getAnswer, listUserAnswers } from "../_repositories/adminFirestore";
+import { userAnswersCacheTag, answerCacheTag } from "./cache_tag";
 import { getServerAuthUser } from "@/_lib/firebase/FirebaseAdminAuth";
 import { answerRoutePath } from "./route_builder";
-
-export async function cacheListUserExamAnswerHistory(
-  authUserId: string,
-  examId: string
-) {
-  const tags = [userExamAnswerHistoryCacheTag(authUserId, examId)];
-  return unstable_cache(
-    (userId: string, examId: string) =>
-      listUserExamAnswerHistory(userId, examId),
-    [],
-    { tags }
-  );
-}
 
 export async function cacheListOwnAnswers() {
   const authUser = await getServerAuthUser();

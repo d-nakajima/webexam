@@ -16,7 +16,7 @@ export default function DynamicShareDialogContent() {
         <ShareAnswerDialogContent
           id={answerId}
           examId={examId}
-          isPublish={true}
+          answerId={answerId}
         />
       );
     } else if (examId) {

@@ -27,22 +27,6 @@ export async function getAnswer(id: string) {
     });
 }
 
-export async function listUserExamAnswerHistory(
-  userId: string,
-  examId: string
-) {
-  return getFirestore()
-    .collection("answers")
-    .where("userId", "==", userId)
-    .where("examId", "==", examId)
-    .get()
-    .then((d) =>
-      d.docs
-        .map((doc) => parseAdminReadDoc(doc, AnswerSchema))
-        .sort((a, b) => (isAfter(b.createdAt, a.createdAt) ? 1 : -1))
-    );
-}
-
 export async function listUserAnswers(userId: string) {
   return getFirestore()
     .collection("answers")
