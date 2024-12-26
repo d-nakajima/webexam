@@ -42,6 +42,9 @@ module "firebase" {
   billing_account         = var.billing_account
   region                  = var.region
   enable_anonymous_signin = true
+  authentication_domains = [
+    data.terraform_remote_state.common.outputs.vercel_production_domain_name
+  ]
 }
 
 module "vercel_envs" {

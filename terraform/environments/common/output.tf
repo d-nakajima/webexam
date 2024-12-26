@@ -10,3 +10,7 @@ output "vercel_api_token" {
 output "vercel_app_name" {
   value = var.vercel_app_name
 }
+
+output "vercel_production_domain_name" {
+  value = var.vercel_production_domain_name
+}
