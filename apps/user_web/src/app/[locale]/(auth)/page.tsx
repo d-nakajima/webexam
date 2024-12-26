@@ -45,10 +45,7 @@ export default async function Home(props: Props) {
         url={`${getVercelOrigin()}/${props.params.locale}/`}
       />
       <main className="px-16 py-8 h-full flex justify-center items-center max-sm:px-5">
-        <PageLayout
-          title="WebExam"
-          sharedDialogContent={<HomeShareDialogContent />}
-        >
+        <PageLayout title="WebExam">
           <HomeScreen />
         </PageLayout>
       </main>

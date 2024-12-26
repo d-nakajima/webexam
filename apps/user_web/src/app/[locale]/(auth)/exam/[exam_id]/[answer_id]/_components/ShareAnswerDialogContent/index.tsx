@@ -4,6 +4,7 @@ import {
   publishAnswer,
   unpublishAnswer,
 } from "@/app/_presets/_repositories/clientFirestore";
+import { revalidateAnswerCache } from "@/app/_presets/_utils/cache";
 import {
   answerRoutePath,
   examRoutePath,
@@ -27,10 +28,12 @@ export default function ShareAnswerDialogContent(props: Props) {
   const publish = async () => {
     await publishAnswer(props.id);
     setAnswerSharedPath(answerRoutePath(props.examId, props.id));
+    revalidateAnswerCache(props.id, props.examId);
   };
 
   const unpublish = async () => {
     await unpublishAnswer(props.id);
+    revalidateAnswerCache(props.id, props.examId);
     setAnswerSharedPath("");
   };
 

@@ -1,5 +1,5 @@
 "use server";
-import { revalidateTag, unstable_cache } from "next/cache";
+import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import {
   getAnswer,
   listUserAnswers,
@@ -11,6 +11,7 @@ import {
   answerCacheTag,
 } from "./cache_tag";
 import { getServerAuthUser } from "@/_lib/firebase/FirebaseAdminAuth";
+import { answerRoutePath } from "./route_builder";
 
 export async function cacheListUserExamAnswerHistory(
   authUserId: string,
@@ -46,5 +47,28 @@ export async function cacheListOwnAnswers() {
 export async function cacheGetAnswer(answerId: string) {
   return unstable_cache((answerId: string) => getAnswer(answerId), [], {
     tags: [answerCacheTag(answerId)],
-  });
+  })(answerId);
+}
+
+export async function revalidateAnswerCache(answerId: string, examId: string) {
+  revalidateTag(answerCacheTag(answerId));
+  revalidatePath(answerRoutePath(examId, answerId));
+}
+
+export async function cacheGetOwnAnswer(answerId: string, userId: string) {
+  const authUser = await getServerAuthUser();
+  if (!authUser) throw new Error("authUser is not found");
+  if (authUser.uid !== userId) return null;
+
+  return unstable_cache(
+    (answerId: string, userId: string) =>
+      getAnswer(answerId).then((answer) => {
+        if (answer?.userId !== userId) return null;
+        return answer;
+      }),
+    [],
+    {
+      tags: [answerCacheTag(answerId), userAnswersCacheTag(authUser.uid)],
+    }
+  )(answerId, userId);
 }

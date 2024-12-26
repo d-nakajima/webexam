@@ -8,12 +8,12 @@ import {
   DialogTrigger,
 } from "@/app/_shadcn/components/ui/dialog";
 import { isUrl } from "@/app/_presets/_utils/url";
+import DynamicShareDialogContent from "./DynamicShareDialogContent";
 
 type Props = {
   title: string;
   shortTitle?: string;
   subtitle?: string;
-  sharedDialogContent?: React.ReactNode;
 };
 
 export default function PageHeader(props: Props) {
@@ -38,16 +38,16 @@ export default function PageHeader(props: Props) {
         )}
       </div>
       <div className="flex items-center p-2 gap-1 flex-shrink-0">
-        {props.sharedDialogContent && (
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button size="icon" variant="ghost">
-                <ShareIcon />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>{props.sharedDialogContent}</DialogContent>
-          </Dialog>
-        )}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="icon" variant="ghost">
+              <ShareIcon />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DynamicShareDialogContent />
+          </DialogContent>
+        </Dialog>
         <AuthBox />
       </div>
     </div>

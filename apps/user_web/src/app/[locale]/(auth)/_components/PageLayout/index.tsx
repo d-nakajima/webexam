@@ -7,7 +7,6 @@ type Props = {
   title: string;
   shortTitle?: string;
   subtitle?: string;
-  sharedDialogContent?: React.ReactNode;
   children: React.ReactNode;
 };
 
