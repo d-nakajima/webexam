@@ -15,7 +15,7 @@ type PageContentProps = {
   answer: ReadDoc<AnswerType>;
 };
 
-export default function PageContent(props: PageContentProps) {
+export default function AnswerPageContent(props: PageContentProps) {
   const answer = props.answer;
   const examId = answer.examId;
   return (
