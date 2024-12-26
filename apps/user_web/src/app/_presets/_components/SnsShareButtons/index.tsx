@@ -22,7 +22,7 @@ export default function ShareButtons(props: Props) {
   if ("url" in props) {
     url = props.url;
   } else if ("path" in props) {
-    url = props.path ? `${getVercelOrigin()}/${locale}/${props.path}` : "";
+    url = props.path ? `${getVercelOrigin()}/${locale}${props.path}` : "";
   } else {
     throw new Error("url is empty");
   }
