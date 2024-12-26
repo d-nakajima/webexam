@@ -49,11 +49,12 @@ export default async function Image(props: Props) {
             fontSize: "50px",
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             color: "#CFCFCF",
             wordBreak: "keep-all",
           }}
         >
-          {exam?.shortTitle}
+          {exam?.title}
         </div>
       </div>
     ),
