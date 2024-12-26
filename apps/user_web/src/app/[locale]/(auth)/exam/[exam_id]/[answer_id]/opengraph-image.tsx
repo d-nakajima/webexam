@@ -1,11 +1,8 @@
-// import { getExam } from "@/app/_presets/_repositories/adminFirestore";
 import { getVercelOrigin } from "@/app/_presets/_utils/url";
 import { ImageResponse } from "next/og";
 import { AnswerDataResponseType } from "./opengraph_data/type";
 import { typedFetch } from "@/app/_presets/_utils/fetch";
 import { answerRoutePath } from "@/app/_presets/_utils/route_builder";
-
-export const runtime = "edge";
 
 export const size = {
   width: 1200,
