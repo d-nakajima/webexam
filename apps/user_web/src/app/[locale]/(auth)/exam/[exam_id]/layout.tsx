@@ -1,12 +1,26 @@
-import ExamProvider from "./_providers/ExamProvider";
+import { ReactNode } from "react";
+import PageLayout from "../../_components/PageLayout";
+import { getExam } from "@/app/_presets/_repositories/adminFirestore";
+import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
   params: { locale: string; exam_id: string };
 };
 
 export default async function ExamRootLayout(props: Props) {
+  setRequestLocale(props.params.locale);
+  const exam = await getExam(props.params.exam_id);
+  if (!exam) return notFound();
+
   return (
-    <ExamProvider id={props.params.exam_id}>{props.children}</ExamProvider>
+    <PageLayout
+      title={exam.title}
+      subtitle={exam.url}
+      shortTitle={exam.shortTitle}
+    >
+      {props.children}
+    </PageLayout>
   );
 }

@@ -5,7 +5,6 @@ import { getVercelOrigin } from "../../_presets/_utils/url";
 import JsonLinkedData from "../../_presets/_components/JsonLinkedData";
 import HomeScreen from "./_components/HomeScreen";
 import PageLayout from "./_components/PageLayout";
-import HomeShareDialogContent from "../_components/HomeShareDialogContent";
 
 type Props = {
   params: { locale: string };
@@ -45,10 +44,7 @@ export default async function Home(props: Props) {
         url={`${getVercelOrigin()}/${props.params.locale}/`}
       />
       <main className="px-16 py-8 h-full flex justify-center items-center max-sm:px-5">
-        <PageLayout
-          title="理解度テスト"
-          sharedDialogContent={<HomeShareDialogContent />}
-        >
+        <PageLayout title="WebExam">
           <HomeScreen />
         </PageLayout>
       </main>

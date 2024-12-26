@@ -7,7 +7,6 @@ type Props = {
   title: string;
   shortTitle?: string;
   subtitle?: string;
-  sharedDialogContent?: React.ReactNode;
   children: React.ReactNode;
 };
 
@@ -15,7 +14,7 @@ export default function PageLayout(props: Props) {
   const { open, isMobile } = useSidebar();
   const { children, ...headerProps } = props;
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       {children}
       <div
         className={cn(

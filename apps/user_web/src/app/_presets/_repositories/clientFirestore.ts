@@ -75,13 +75,32 @@ export function listenAnswer(
   });
 }
 
+export function listenOwnAnswer(
+  id: string,
+  userId: string,
+  callback: (answer: ReadDoc<AnswerType>) => void
+) {
+  const _query = query(
+    _collection(answerCollectionPath()),
+    where("__name__", "==", id),
+    where("userId", "==", userId)
+  );
+
+  return onSnapshot(_query, (snapshot) => {
+    if (snapshot.docs.length === 0) return null;
+    return callback(ClientReadDocParser(AnswerSchema, snapshot.docs[0]));
+  });
+}
+
 export function listenUserAnswers(
   userId: string,
-  callback: (answers: ReadDoc<AnswerType>[]) => void
+  callback: (answers: ReadDoc<AnswerType>[]) => void,
+  options: { lastUpdatedAt: Date }
 ) {
   const _query = query(
     _collection(answerCollectionPath()),
     where("userId", "==", userId),
+    where("createdAt", ">", options.lastUpdatedAt),
     orderBy("createdAt", "desc")
   );
   return onSnapshot(_query, (snapshot) => {

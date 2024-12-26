@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
+    "soft-build": "next build --no-lint",
     "start": "next start --hostname 0.0.0.0",
     "lint": "next lint",
     "lint:fix": "next lint --fix",

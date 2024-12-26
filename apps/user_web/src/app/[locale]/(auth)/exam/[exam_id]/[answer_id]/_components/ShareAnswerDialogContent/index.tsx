@@ -1,9 +1,12 @@
 "use client";
+import { useAuth } from "@/_lib/firebase/FirebaseAuthProvider";
 import ShareButtons from "@/app/_presets/_components/SnsShareButtons";
 import {
+  listenOwnAnswer,
   publishAnswer,
   unpublishAnswer,
 } from "@/app/_presets/_repositories/clientFirestore";
+import { revalidateAnswerCache } from "@/app/_presets/_utils/cache";
 import {
   answerRoutePath,
   examRoutePath,
@@ -11,27 +14,36 @@ import {
 import { DialogTitle } from "@/app/_shadcn/components/ui/dialog";
 import { Separator } from "@/app/_shadcn/components/ui/separator";
 import { Switch } from "@/app/_shadcn/components/ui/switch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   id: string;
   examId: string;
-  isPublish: boolean;
+  answerId: string;
 };
 
 export default function ShareAnswerDialogContent(props: Props) {
-  const [answerSharedPath, setAnswerSharedPath] = useState(
-    props.isPublish ? answerRoutePath(props.examId, props.id) : ""
-  );
+  const { authUser } = useAuth();
+  if (!authUser) throw new Error("user is not authenticated");
+
+  const [isPublish, setIsPublish] = useState(false);
+  const answerSharedPath = answerRoutePath(props.examId, props.id);
+
+  useEffect(() => {
+    return listenOwnAnswer(props.answerId, authUser.uid, (answer) => {
+      if (!answer) return;
+      setIsPublish(answer.isPublish);
+    });
+  }, []);
 
   const publish = async () => {
     await publishAnswer(props.id);
-    setAnswerSharedPath(answerRoutePath(props.examId, props.id));
+    revalidateAnswerCache(props.id, props.examId);
   };
 
   const unpublish = async () => {
     await unpublishAnswer(props.id);
-    setAnswerSharedPath("");
+    revalidateAnswerCache(props.id, props.examId);
   };
 
   return (
@@ -54,7 +66,7 @@ export default function ShareAnswerDialogContent(props: Props) {
         <div className="flex gap-1 items-center">
           <span>公開する</span>
           <Switch
-            defaultChecked={props.isPublish}
+            checked={isPublish}
             className="data-[state=unchecked]:bg-opacity-80"
             onCheckedChange={(isChecked) => {
               if (isChecked) {
@@ -67,7 +79,7 @@ export default function ShareAnswerDialogContent(props: Props) {
         </div>
       </div>
       <div>
-        <ShareButtons path={answerSharedPath} />
+        <ShareButtons path={isPublish ? answerSharedPath : ""} />
       </div>
     </>
   );

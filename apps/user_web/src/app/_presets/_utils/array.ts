@@ -29,3 +29,10 @@ export function groupByFunc<T, K>(
     return groups;
   }, [] as { group: K; items: T[] }[]);
 }
+
+export function uniqueBy<T, K extends keyof T>(array: T[], key: K): T[] {
+  return array.filter(
+    (value, index, self) =>
+      self.findIndex((item) => item[key] === value[key]) === index
+  );
+}

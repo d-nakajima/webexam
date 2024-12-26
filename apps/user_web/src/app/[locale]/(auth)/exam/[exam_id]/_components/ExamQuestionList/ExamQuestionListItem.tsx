@@ -51,7 +51,7 @@ type Question =
 
 type Props = Question;
 
-export default async function ExamQuestionListItem(props: Props) {
+export default function ExamQuestionListItem(props: Props) {
   let component: React.ReactNode;
   switch (props.type) {
     case "single_select":
