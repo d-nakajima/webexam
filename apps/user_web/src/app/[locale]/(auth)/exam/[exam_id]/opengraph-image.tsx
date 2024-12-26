@@ -21,6 +21,8 @@ export default async function Image(props: Props) {
     props.params.exam_id
   }/opengraph_data`;
 
+  console.info(process.env.VERCEL_URL);
+  console.info(process.env.VERCEL_PROJECT_PRODUCTION_URL);
   const exam = await typedFetch<ExamDataResponseType>(examDataUrl);
   const bgImageUrl = `${getVercelOrigin()}/ogp/share_bg.png`;
 
