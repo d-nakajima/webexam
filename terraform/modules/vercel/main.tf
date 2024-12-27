@@ -8,6 +8,10 @@ terraform {
   }
 }
 
+provider "vercel" {
+  api_token = var.vercel_api_token
+  team = var.vercel_team_id
+}
 resource "vercel_project" "with_git" {
   name = var.vercel_app_name
   framework = "nextjs"
@@ -32,7 +36,23 @@ EOT
   }
 }
 
+
 resource "vercel_project_domain" "production" {
   project_id = vercel_project.with_git.id
-  domain     = var.production_domain_name != null ? var.production_domain_name : "${var.vercel_app_name}.vercel.app"
+  domain     = var.production_domain_name
+}
+
+resource "vercel_project_domain" "development" {
+  project_id = vercel_project.with_git.id
+  domain     = var.development_domain_name
+  git_branch = "develop"
+}
+
+resource "vercel_project_deployment_retention" "default" {
+  project_id            = vercel_project.with_git.id
+  team_id               = var.vercel_team_id
+  expiration_preview    = "1m"
+  expiration_production = "unlimited"
+  expiration_canceled   = "1m"
+  expiration_errored    = "1m"
 }

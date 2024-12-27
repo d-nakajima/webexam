@@ -13,10 +13,6 @@ terraform {
   }
 }
 
-provider "vercel" {
-  api_token = var.vercel_api_token
-}
-
 module "vercel" {
   source = "../../modules/vercel"
   vercel_api_token = var.vercel_api_token
@@ -24,4 +20,6 @@ module "vercel" {
   github_repo = var.github_repo
   root_directory = var.root_directory
   production_domain_name = var.vercel_production_domain_name
+  development_domain_name = var.vercel_development_domain_name
+  vercel_team_id = var.vercel_team_id
 }

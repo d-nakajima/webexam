@@ -3,7 +3,7 @@ import { examRoutePath } from "@/app/_presets/_utils/route_builder";
 import { Link } from "@/_lib/i18n/routing";
 import { Button } from "@/app/_shadcn/components/ui/button";
 import { ReadDoc } from "@/_lib/firebase/ReadDoc";
-import { AnswerType } from "@/app/_shared";
+import { AnswerType, QuestionType } from "@/app/_shared";
 import ExamAnswerHistory from "../ExamAnswerHistory";
 import ExamIndex from "../ExamIndex";
 import ExamIndexItem from "../ExamIndex/ExamIndexItem";
@@ -18,6 +18,12 @@ type PageContentProps = {
 export default function AnswerPageContent(props: PageContentProps) {
   const answer = props.answer;
   const examId = answer.examId;
+
+  const isSelectQuestion = (question: QuestionType) => {
+    return (
+      question.type === "single_select" || question.type === "multi_select"
+    );
+  };
   return (
     <ExamLayout
       left={
@@ -59,9 +65,7 @@ export default function AnswerPageContent(props: PageContentProps) {
                 props["correctAnswerIndex"] = Number(question.answer);
               } else if (question.type === "multi_select") {
                 props["answerIndexes"] = thisAnswer.split(",").map(Number);
-                props["correctAnswerIndexes"] = question.answer
-                  .split(",")
-                  .map(Number);
+                props["correctAnswerIndexes"] = question.answer;
               } else {
                 props["answer"] = thisAnswer;
                 props["correctAnswer"] = question.answer;
@@ -75,7 +79,11 @@ export default function AnswerPageContent(props: PageContentProps) {
                   type={question.type}
                   title={question.title}
                   description={question.description}
-                  options={question.options?.map((option) => option.text) || []}
+                  options={
+                    isSelectQuestion(question)
+                      ? question.options.map((option) => option.text)
+                      : []
+                  }
                   gradeRate={answer.grades[index]?.rate}
                   {...props}
                   comment={answer.grades[index]?.comment}
