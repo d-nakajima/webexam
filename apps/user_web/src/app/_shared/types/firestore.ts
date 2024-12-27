@@ -6,6 +6,53 @@ export const SampleSchema = z.object({
 
 export type SampleType = z.infer<typeof SampleSchema>;
 
+const QuestionSchemaBase = z.object({
+  title: z.string(),
+  description: z.string(),
+  point: z.number(),
+});
+
+const SingleSelectQuestionSchema = z
+  .object({
+    type: z.literal("single_select"),
+    options: z
+      .object({
+        text: z.string(),
+        image: z.string().optional(),
+      })
+      .array(),
+    answer: z.number().describe("index of options"),
+  })
+  .merge(QuestionSchemaBase);
+
+const MultiSelectQuestionSchema = z
+  .object({
+    type: z.literal("multi_select"),
+    options: z
+      .object({
+        text: z.string(),
+        image: z.string().optional(),
+      })
+      .array(),
+    answer: z.number().array().describe("indexes of options"),
+  })
+  .merge(QuestionSchemaBase);
+
+const TextQuestionSchema = z
+  .object({
+    type: z.enum(["line_text", "free_text"]),
+    answer: z.string(),
+  })
+  .merge(QuestionSchemaBase);
+
+const QuestionSchema = z.union([
+  SingleSelectQuestionSchema,
+  MultiSelectQuestionSchema,
+  TextQuestionSchema,
+]);
+
+export type QuestionType = z.infer<typeof QuestionSchema>;
+
 export const ExamSchema = z.object({
   status: z.enum(["requested", "creating", "created"]),
   title: z.string(),
@@ -15,22 +62,7 @@ export const ExamSchema = z.object({
     message: "invalid_url",
   }),
   media: z.enum(["system", "twitter", "web_extension"]),
-  questions: z.array(
-    z.object({
-      title: z.string(),
-      description: z.string(),
-      type: z.enum(["line_text", "free_text", "single_select", "multi_select"]),
-      point: z.number(),
-      options: z
-        .object({
-          text: z.string(),
-          image: z.string().optional(),
-        })
-        .array()
-        .optional(),
-      answer: z.string(),
-    })
-  ),
+  questions: QuestionSchema.array(),
 });
 
 export type ExamType = z.infer<typeof ExamSchema>;

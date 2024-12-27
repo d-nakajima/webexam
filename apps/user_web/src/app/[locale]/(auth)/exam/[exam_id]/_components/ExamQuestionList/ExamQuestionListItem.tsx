@@ -137,10 +137,11 @@ function MultiSelectQuestion(props: MultiSelectQuestion) {
     <div className="flex flex-col gap-2">
       {props.options.map((option, index) => {
         const additionalStyle =
-          props.mode === "view" &&
-          props.correctAnswerIndexes &&
-          props.correctAnswerIndexes.includes(index)
-            ? "font-bold"
+          props.mode === "view"
+            ? props.correctAnswerIndexes &&
+              props.correctAnswerIndexes.includes(index)
+              ? "font-bold"
+              : "line-through"
             : "";
 
         return (

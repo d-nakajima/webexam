@@ -13,6 +13,7 @@ import { getVercelOrigin } from "@/app/_presets/_utils/url";
 import { examRoutePath } from "@/app/_presets/_utils/route_builder";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { QuestionType } from "@/app/_shared";
 
 type Props = {
   params: { locale: string; exam_id: string };
@@ -58,6 +59,12 @@ export default async function ExamPage(props: Props) {
   const exam = await getExam(props.params.exam_id);
   if (!exam) notFound();
 
+  const isSelectQuestion = (question: QuestionType) => {
+    return (
+      question.type === "multi_select" || question.type === "single_select"
+    );
+  };
+
   return (
     <ExamLayout
       left={
@@ -85,7 +92,11 @@ export default async function ExamPage(props: Props) {
                 type={question.type}
                 title={question.title}
                 description={question.description}
-                options={question.options?.map((option) => option.text) || []}
+                options={
+                  isSelectQuestion(question)
+                    ? question.options.map((option) => option.text)
+                    : []
+                }
               />
             ))}
           </ExamQuestionList>
