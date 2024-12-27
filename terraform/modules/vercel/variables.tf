@@ -3,6 +3,11 @@ variable "vercel_api_token" {
   description = "Vercel API Token"
 }
 
+variable "vercel_team_id" {
+  type = string
+  description = "Vercel Team ID"
+}
+
 variable "vercel_app_name" {
   type = string
   description = "Vercel App Name"
