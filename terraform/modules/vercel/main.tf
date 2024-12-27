@@ -32,7 +32,14 @@ EOT
   }
 }
 
+
 resource "vercel_project_domain" "production" {
   project_id = vercel_project.with_git.id
-  domain     = var.production_domain_name != null ? var.production_domain_name : "${var.vercel_app_name}.vercel.app"
+  domain     = var.production_domain_name
+}
+
+resource "vercel_project_domain" "development" {
+  project_id = vercel_project.with_git.id
+  domain     = var.development_domain_name
+  git_branch = "develop"
 }

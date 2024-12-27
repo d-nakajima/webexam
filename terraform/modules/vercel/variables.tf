@@ -20,5 +20,8 @@ variable "root_directory" {
 
 variable "production_domain_name" {
   type = string
-  nullable = true
+}
+
+variable "development_domain_name" {
+  type = string
 }
