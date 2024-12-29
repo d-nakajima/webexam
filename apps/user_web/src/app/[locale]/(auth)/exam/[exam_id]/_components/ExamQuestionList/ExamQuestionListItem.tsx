@@ -106,8 +106,8 @@ function SingleSelectQuestion(props: SingleSelectQuestion) {
         const additionalStyle =
           props.mode === "view"
             ? props.correctAnswerIndex === index
-              ? "font-bold"
-              : "line-through"
+              ? "font-bold text-white"
+              : "line-through opacity-70"
             : "";
 
         return (
@@ -140,7 +140,7 @@ function MultiSelectQuestion(props: MultiSelectQuestion) {
           props.mode === "view"
             ? props.correctAnswerIndexes &&
               props.correctAnswerIndexes.includes(index)
-              ? "font-bold"
+              ? "font-bold !opacity-100"
               : "line-through"
             : "";
 

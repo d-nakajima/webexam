@@ -28,7 +28,7 @@ const outputSchema = z.object({
 
 export const gradeAnswer = ai.defineFlow(
   {
-    name: "generateExam",
+    name: "gradeAnswer",
     inputSchema: InputSchema,
     outputSchema: outputSchema,
   },
