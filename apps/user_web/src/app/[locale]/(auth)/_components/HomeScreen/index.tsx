@@ -56,7 +56,7 @@ export default function HomeScreen() {
         <div>
           <Input
             {...register("url")}
-            placeholder="理解度テストを作成する記事のURLを入力してください......"
+            placeholder="記事URLを入力してください..."
             className="rounded-full p-5"
           />
           {errors.url && (
