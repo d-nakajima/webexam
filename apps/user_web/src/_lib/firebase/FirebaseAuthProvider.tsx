@@ -70,6 +70,7 @@ const AuthProvider: React.FC<Props> = ({ children, loginComponent: _ }) => {
           displayName: user.displayName ?? user.providerData[0]?.displayName,
           photoURL: user.photoURL ?? user.providerData[0]?.photoURL,
         });
+        console.log("User signed in:", user);
         setAuthCookie(await user.getIdToken());
         setIsInitialized(true);
       }
