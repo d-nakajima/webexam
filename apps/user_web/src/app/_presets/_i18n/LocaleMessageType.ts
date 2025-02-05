@@ -21,4 +21,25 @@ export type LocaleMessageType = {
   auth: {
     already_have_account: string;
   };
+  top: {
+    form: {
+      placeholder: string;
+    };
+    how_to_use: {
+      intro: string;
+      title: string;
+      step1: {
+        title: string;
+        description: string;
+      };
+      step2: {
+        title: string;
+        description: string;
+      };
+      step3: {
+        title: string;
+        description: string;
+      };
+    };
+  };
 };

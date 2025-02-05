@@ -14,15 +14,21 @@ import ErrorMessage from "@/app/_presets/_components/ErrorMessage";
 import { useRouter } from "@/_lib/i18n/routing";
 import { examRoutePath } from "@/app/_presets/_utils/route_builder";
 import ReactLoading from "react-loading";
+import HowToUseAnswerImage from "../HowToUseStepItem/how_to_use_answer.png";
+import HowToUseRegisterImage from "../HowToUseStepItem/how_to_use_register.png";
+import HowToUseReviewImage from "../HowToUseStepItem/how_to_use_review.png";
+
 import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogTitle,
 } from "@/app/_shadcn/components/ui/alert-dialog";
 import { useState } from "react";
+import HowToUseStepItem from "../HowToUseStepItem";
 
 export default function HomeScreen() {
-  const t = useTranslations("validation.exam");
+  const tValidation = useTranslations("validation.exam");
+  const t = useTranslations("top");
   const { push } = useRouter();
   const ExamCreateSchema = ExamSchema.pick({ url: true });
   const {
@@ -48,7 +54,33 @@ export default function HomeScreen() {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
+    <div className="w-full h-full flex flex-col justify-center items-center">
+      <div className="my-20 flex flex-col items-center">
+        <h2 className="text-lg font-bold mb-5">{t("how_to_use.intro")}</h2>
+        <h1 className="text-2xl font-bold mb-16 max-sm:text-2xl">
+          {t("how_to_use.title")}
+        </h1>
+        <div className="flex gap-5 max-sm:flex-col max-sm:gap-2">
+          <HowToUseStepItem
+            step="1"
+            title={t("how_to_use.step1.title")}
+            description={t("how_to_use.step1.description")}
+            image={HowToUseRegisterImage}
+          />
+          <HowToUseStepItem
+            step="2"
+            title={t("how_to_use.step2.title")}
+            description={t("how_to_use.step2.description")}
+            image={HowToUseAnswerImage}
+          />
+          <HowToUseStepItem
+            step="3"
+            title={t("how_to_use.step3.title")}
+            description={t("how_to_use.step3.description")}
+            image={HowToUseReviewImage}
+          />
+        </div>
+      </div>
       <form
         className="relative max-w-lg w-full"
         onSubmit={handleSubmit(submit)}
@@ -56,12 +88,12 @@ export default function HomeScreen() {
         <div>
           <Input
             {...register("url")}
-            placeholder="記事URLを入力してください..."
-            className="rounded-full p-5"
+            placeholder={t("form.placeholder")}
+            className="rounded-full p-5  border-2"
           />
           {errors.url && (
             <ErrorMessage className="absolute left-1/2 -translate-x-1/2">
-              {t(errors.url.message)}
+              {tValidation(errors.url.message)}
             </ErrorMessage>
           )}
         </div>
