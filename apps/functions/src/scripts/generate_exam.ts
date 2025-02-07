@@ -4,6 +4,7 @@ import openAI, { gpt4oMini } from "genkitx-openai";
 
 import { genkit, z } from "genkit";
 import { ExamSchema } from "../_shared";
+import { JSDOM } from "jsdom";
 
 // configure a Genkit instance
 const ai = genkit({
@@ -36,12 +37,25 @@ export const generateExam = ai.defineFlow(
   },
   async (input) => {
     const url = input.url;
+    const isExist = await fetch(url, {
+      method: "HEAD",
+    }).then((res) => res.ok);
+    if (!isExist) {
+      throw new Error("Invalid URL");
+    }
+    const dom = await JSDOM.fromURL(url);
+    const text = dom.window.document.body.textContent;
+
+    if (!text) {
+      throw new Error("Failed to fetch content");
+    }
+
     const res = await ai.generate({
       system: SYSTEM_PROMPT,
       output: {
         schema: outputSchema,
       },
-      prompt: url,
+      prompt: text,
     });
     if (res.output == null) {
       throw new Error("Response doesn't satisfy schema.");
@@ -52,7 +66,7 @@ export const generateExam = ai.defineFlow(
 
 const SYSTEM_PROMPT = `
 あなたは学習者の理解度を確認するための問題作成に特化したアシスタントです。
-ユーザーが指定した記事のURLから取得した内容を元に、以下の要件に従って問題を作成してください。  
+HTMLドキュメントのbody情報を元に、以下の要件に従って問題を作成してください。  
 ただし、記事に依存しすぎず、記事を読んでいなくても解ける問題、を作成するようにしてください。  
 
 ---
