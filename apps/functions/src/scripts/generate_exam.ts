@@ -1,17 +1,60 @@
 // import the Genkit and Google AI plugin libraries
+import { googleAI, gemini15Pro } from "@genkit-ai/googleai";
 // import { googleAI, gemini15Flash } from "@genkit-ai/googleai";
 import openAI, { gpt4oMini } from "genkitx-openai";
 
 import { genkit, z } from "genkit";
 import { ExamSchema } from "../_shared";
 import { JSDOM } from "jsdom";
+import { ZodTypeAny } from "zod";
+
+function schemaToString(schema: ZodTypeAny): string {
+  if (schema instanceof z.ZodString) return "z.string()";
+  if (schema instanceof z.ZodNumber) return "z.number()";
+  if (schema instanceof z.ZodBoolean) return "z.boolean()";
+  if (schema instanceof z.ZodLiteral) {
+    return `z.literal(${JSON.stringify(schema._def.value)})`;
+  }
+  if (schema instanceof z.ZodOptional) {
+    return `${schemaToString(schema._def.innerType)}.optional()`;
+  }
+  if (schema instanceof z.ZodArray) {
+    return `z.array(${schemaToString(schema._def.type)})`;
+  }
+  if (schema instanceof z.ZodObject) {
+    const shape = schema._def.shape();
+    const entries = Object.entries(shape)
+      .map(([key, value]) => `${key}: ${schemaToString(value as ZodTypeAny)}`)
+      .join(", ");
+    return `z.object({ ${entries} })`;
+  }
+  if (schema instanceof z.ZodUnion) {
+    return `z.union([${schema._def.options.map(schemaToString).join(", ")}])`;
+  }
+  if (schema instanceof z.ZodIntersection) {
+    return `z.intersection(${schemaToString(
+      schema._def.left
+    )}, ${schemaToString(schema._def.right)})`;
+  }
+  if (schema instanceof z.ZodEffects) {
+    return `z.preprocess( /* function */ , ${schemaToString(
+      schema._def.schema
+    )})`;
+  }
+  if (schema instanceof z.ZodRecord) {
+    return `z.record(${schemaToString(schema._def.valueType)})`;
+  }
+  if (schema instanceof z.ZodTuple) {
+    return `z.tuple([${schema._def.items.map(schemaToString).join(", ")}])`;
+  }
+  return "z.unknown()";
+}
 
 // configure a Genkit instance
 const ai = genkit({
-  // plugins: [googleAI()],
-  // model: gemini15Flash,
-  plugins: [openAI({ apiKey: process.env.OPENAI_API_KEY })],
-  model: gpt4oMini, // set default model
+  plugins: [googleAI(), openAI({ apiKey: process.env.OPENAI_API_KEY })],
+  // plugins: [openAI({ apiKey: process.env.OPENAI_API_KEY })],
+  // model: gpt4oMini, // set default model
 });
 
 const InputSchema = z.object({
@@ -51,16 +94,41 @@ export const generateExam = ai.defineFlow(
     }
 
     const res = await ai.generate({
-      system: SYSTEM_PROMPT,
-      output: {
-        schema: outputSchema,
-      },
+      system: `${SYSTEM_PROMPT}
+
+      ---
+
+      出力は以下のスキーマ定義に沿ってください。
+      ${schemaToString(outputSchema)}
+
+      `,
       prompt: text,
+      model: gemini15Pro,
     });
     if (res.output == null) {
       throw new Error("Response doesn't satisfy schema.");
     }
-    return res.output;
+
+    console.log(res.output);
+
+    const formatResponse = await ai.generate({
+      system: `
+      与えられたデータを以下のスキーマ定義に沿って整形してください。
+      各questionのtitle, descriptionはtitleが長くならないようにdescriptionに移すなど、適当に調整してください。
+      ${schemaToString(outputSchema)}
+      `,
+      prompt: JSON.stringify(res.output),
+      model: gpt4oMini,
+      output: {
+        schema: outputSchema,
+      },
+    });
+
+    if (formatResponse.output == null) {
+      throw new Error("Format Response doesn't satisfy schema.");
+    }
+
+    return formatResponse.output;
   }
 );
 

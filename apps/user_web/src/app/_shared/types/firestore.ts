@@ -14,7 +14,7 @@ const QuestionSchemaBase = z.object({
 
 const SingleSelectQuestionSchema = z
   .object({
-    type: z.literal("single_select"),
+    type: z.enum(["single_select"]),
     options: z
       .object({
         text: z.string(),
@@ -27,7 +27,7 @@ const SingleSelectQuestionSchema = z
 
 const MultiSelectQuestionSchema = z
   .object({
-    type: z.literal("multi_select"),
+    type: z.enum(["multi_select"]),
     options: z
       .object({
         text: z.string(),

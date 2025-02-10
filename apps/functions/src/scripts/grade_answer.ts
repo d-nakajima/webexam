@@ -1,15 +1,16 @@
+import { googleAI, gemini15Pro } from "@genkit-ai/googleai";
 // import { googleAI, gemini15Flash } from "@genkit-ai/googleai";
-import openAI, { gpt4oMini } from "genkitx-openai";
+// import openAI, { gpt4oMini } from "genkitx-openai";
 
 import { genkit, z } from "genkit";
 import { AnswerSchema } from "../_shared";
 
 // configure a Genkit instance
 const ai = genkit({
-  // plugins: [googleAI()],
-  // model: gemini15Flash,
-  plugins: [openAI({ apiKey: process.env.OPENAI_API_KEY })],
-  model: gpt4oMini, // set default model
+  plugins: [googleAI()],
+  model: gemini15Pro,
+  // plugins: [openAI({ apiKey: process.env.OPENAI_API_KEY })],
+  // model: gpt4oMini, // set default model
 });
 
 const InputSchema = AnswerSchema.pick({
